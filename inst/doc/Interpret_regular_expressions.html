@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+
+
+<title>Interpret regular expressions</title>
+
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+<style type="text/css">
+/* for pandoc --citeproc since 2.11 */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Interpret regular expressions</h1>
+
+
+
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(coder)</span></code></pre></div>
+<p>Classcodes objects (as described in <code>vignette(&quot;classcodes&quot;)</code>) use regular expressions to classify/categorize individual codes into groups (i.e. comorbidity conditions). Those regular expressions might be hard to interpret on their own. Several methods are therefore available to aid such interpretation of the classcodes objects.</p>
+<div id="visualize" class="section level1">
+<h1><code>visualize()</code></h1>
+<p>A graphical representation of a classcodes object is created by <code>visualize()</code>. It will be showed in the default web browser (requires an Internet connection; not available within this vignette).</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">visualize</span>(charlson)</span></code></pre></div>
+<p>Visualization of all groups (comorbidity conditions) simultaneously might lead to complex figures. We can focus on a specific group (comorbidity) by the <code>group</code> argument. How is myocardial infarction codified by <code>regex_icd9cm_deyo</code>?</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">visualize</span>(charlson, <span class="st">&quot;myocardial infarction&quot;</span>, <span class="at">regex    =</span> <span class="st">&quot;icd9cm_deyo&quot;</span>)</span></code></pre></div>
+<p><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAXgAAAC3CAYAAAAYVEVzAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAADInSURBVHhe7Z0JXJTVGv9/7CIqKoqaW2ZyrZTSK+q9Ljf7hGhmmWub+nfN3UzTci2T9J9ZN/dQslL7q2HZxVSkq4ZaKl4ptDTI3LdxA2Vf5H+e854XZmCAAWZgGJ9vn9Occ+add8Zh5vf+3ud5zjtOt27dynFyckJOTg4YhmEYx8FZ3TIMwzAOBgs8wzCMg8ICzzAM46CwwDMMwzgoLPAMwzAOCgs8wzCMg1LqMknD1qFoOSpcjfLwfaQrOvwjEL1fHID+7XzVbPlQ2GsypveaU/iiX/m+rooiIXIjJg+7BQwJwCfvd0RNNa+TfnQJnusejGgatJuFiG+nIsBL3lU0CV54+0U3rLt5D6GRd9Ar/47zkRS1EIPei0EGDQbOReSoVnI+l+xM3Lp8Aod3hSMs4gTOJ2rT7actR3BQUX+r6wgb+xVe+14NFbO2TcYbbdXAiJTTe/D1+k04fDABmXCDd6cu6DN4MDo3L/iPTrwQg2N7duHAj+L1XMiUc26Nm6Flj94Y8ExnNKgmp0wwfLcOj0y8o0aKqU/j5uTH1CA/7vh+flWMEB/ZYR+lYGEX+Q6VmPg1IZj3bjpqznsGK0c1V7MMYwMHbzgZhfDP5mB0964YtDFOzTLlz0Xs+/KWEDIXdH+loLjjfBgmvqrEnTgajMHTwnBODQvHDQe+JHEHWr+WhaeLEXekHsa6D5W4F8KtH97FoOEL8dGWPHG3NiknQjF3zGockOJOZCLx4B58MWYKvjqRLGdyuR6BVeL1fLUhJlfcicwLZ3B8zVLM/T/zsfeamiwTGej1YjZai9664Co4kKLNlojkGOxemS46tTGwH4s7Y4pVBH7W7lsQZwKynflxKfpL02VA5MTlCBdCUBEYvybjdr+498yffsa3e0VnUFv0ym8gk6OxZORohBlEv91ILF0mnLvoGjaPxujF0SC5KJS4Kli0njo5GBaUAg85WRjJ+OWL1fhPqhoWhosXHn26L95e8TFCJ/mpyZLSGLvOT8ZN0Qq49+w4fP9RBOSxo3EQJn27BWu+fRvdGtNEAvYu+gans6lvitvfe2PkZyFYEym23xWCt6a0QVW6I/EEvgrZo+3PCN/nh8nnv3n4cTyr5orFLxPD/ilubzpj0TZPba4EXNp+DAevA1VnBeDJ2mqSYRRWd/DerV/FrJld1WgDYuNVlylHLmL3qqvSvfcant+9n0PYtMEIPioEqcssRHz9AV59ZRb+8+N7CBTHvuiFgzFxa2E+3hUHIl0gHgp0yEZnKZCFk3FyE5ZtFe7Y0w3uas4ctZ9+G5/MeBFP+TVEtaI2LC0n92PvBa3bcnA/tKbwSrU26DVYhYqu7cLhk1pXwwstZ36MlYsGo0Nj9e651ETzZ0agT3ttiKjDOJWk+mUiDZ2f1sKjRz92w/cJsmsZ6THYtohsf228Oqi0B0bGkbFJktXTy1v1hOG7RDbRiMQ4hC+ehKB2tVG7tmgtO6LPxCUIP1nIuXliLDZMG4SOLWn7NgiauAJRhigsocdSGxYmzhVKx7kvB2n7EK3lvKg853o5DEP1/becjkh5FiJcrz4nnvPc+UgsGdURLeU2HTFomjiY2Si8UFLIvW8h9/7sY+hu4t7TEb1YuPTNBjR9JQQRW4VzV38qj9bjsXn3ZoxsZ0DYqNFYctSMj0/wwDefa93OT2ehidY1j3DNYYsjcF4cXl6e1A9PqOmK4MqfMSos44uWD+cd7rwfboU6speJ439ekj1J3c7o062hGhhTC971VFecnaQUd2ZiIU2eEAdL2XPGN4eLPicy5tI25d6ntUEndu+MGWwi8KnJeUrn39QoJHI+DKM7dMTQhRsQ/ZeaM8QhamMwhnZ6EpO+y+ccKZQwQMx/Fok4qeLnEL1xDvp0HY01coOy0XTIBwgZpL0+w7JgrD1OvXREfTobWqrWF+NXC2frIwd5/LUGo7sPQvDWOO3gIv4NkZ9NwpMDliA6XzhXJ3qxOjhQW5wb+bYB17H3S3LvQKchHVFXm1R4IODNCBmqilnWH01d1bROk0B8IENbEZjarqDQJB53wVeq3+7BohOC58NXYZ1wzfX7jcUrj1uSubUdN67qFqAmqlZRXaKKF3QrkrdNEWQcw7EfVL/e39DE9M0tPY3vobP6jH3/i2uB0I9Z0n8Xnzly71XxQp9H4abNMowJVhf4xOMbEPx+lDZoPQtdKYMkOSecuB73nYrNJ65ocfH4fVgqRVbcP2OFcssasZ+9KUMJRMDbEThD25+JwKwmhmJde3B3I0EtVFibov/bC1TOIBpzPhLO/PhaBC/T9u7/5nrMftKMozou9vPKZpwyiNdjOIXNUyiCLTgajA+3FZ+mtCm/RWPLdnHb7VH0+aflbtAS4v/QPy458Hvgnuqb4Vo4Pl0hHLFnG7z2UpsiwzO2x4AbKjxDB2zvvJNLYeFrKgcvuCC2U93COL01FIeVa28w6ClYL6WZjRYdVDfMBZZENRP2xmD3b4DbhLbo/qCaZJh8WEXgjcW02b8mSRH37TIeIWsnIEDXmOPbsVa5n/EzpyHwAXWHjz9eHTpY6xvWIjJa9y+xiFwRq3Vbv4fFbwZobss7AFOXvAd/eYcVaNIfi/89Unz1Bd/NRtCAObllg4snBRSSRHwVE8YFwpccsKsvAsdNEDMakRHRFlSi2Ipb2PfZaZCv6zTqHzAXZCg9Hjh/WnVxD02MTsxMMWDP8k04Ijxl+0kj0NlYUCscL+F3T+DrMa9g3JjVOJ5BY8tI+SUUqz7TAuRuHUdg0jPWfHfTUS83n+GE88WeTMTh+49viVvh3l9sw+6dKRSbhGjg2xUDxo5E/xZ58miIOyIkW2NF3wamzvqZJeoeYf6SVez3chxi9Q96j/amgt66PQJVtzDMVtGIg4Q5vHu8h5CJpFjizEA+ZwBm/V9xcCossvBsV/gbh23EQaqrXjax/VyxZxc247dD2LJZ3JJ772qpdFmZk+FYcigTaP8iJnYr9ChQQeSLm6eKseoWhSyxfNOoCmdmEOq4yLtsgBD4YirPEiKjNfc+lt07UzRWEXhdTK8cDdHCHYYorHh5LsIua/eXmfyxYoFxKLXseKDD04ORW4fQ+jkEtikivCG+3KYFbWJUzBc+4M3iDzRl4xYObjwN8phPDGljZfdeArKpultwZD0G9xiIwEDRXg4Vjl6xZb6c+/SEGtscX9TJdccGJGa0woDVG7Fy9Ri0Fu9WblimsdhOdU24FoGlM43EfekItCx5NaMVOY3vl9H6Bg9076PKNhmmEKzq4D0e6o9lq8dr4Q6EY/lW3bObUliNOjWzdepZ6taINHVrFZKj8eHsJeLEV3F8Dt78OLbwenAhYqYFFGJkpo66XDkbg21fitvHmuOFQC6pMKZOff0zlYAU4w9OWnJuQjNvGyOEuC8aFYrT9Mdu3BljPxyhlVjalBw0yZ/UNyIl6hh2HxOdQf4F1zcwTD6sHqLxeHIAJrbT+rErNuQmTX2b+ivhB/bHWrDC9YGmeY56V154R3L8CCJVt+wkInLeYCyhChrfkZg6UXPX0e+9ieXmSgWJ7VGINT6NvhmLKEpsEs82zf13GmPbKpp0RG/6HVTo99iUjmihTVqZdDTJzSo6Fx4nbjUCkZFbTNtXI6CXj8tLFYi51/JdrcCWNHhYj1MbcOrPvELzxD9PKAfvhtYP5zvnST2Br97Wxb0DRi6chLY2O2564FpuIlgIvLkPkOQi9q4pbH0DwxTEBjF4f7w6SaUcDWux9nuVcmwXmCv8UR9MR/AP55CuO/P0RJw7Ho610+YgPDes448uU9QnnRy1EEXpthKjsWTqHFPBLwOG797ExM80tQqcOR6zZi7ALFn5E43gmcsLKXvcgCVLI2Gg159lQOTK5WJGIzAoAE1Vv9w4ewBblovbxxqhTzfbufcWf9MrZ5wQd9k26Rub8EgXtWoVOLV+K47TAqWkGHy/XsWJGvdAh0e0roTEffx8bXGUFPep6JBb/24LXBB/WHX7Zxd6gC58fQPDmMcm31LvwP6YqrQ58v0NiJJG2B/j1+bF6JcMbIMGvsrRNmiGNv8aiumfnTcKi3ig67hlGPmQNopeGIRmtG2zIASf9zXrko0xWyYp2tCtRtbzfBhmz1ALpdrNwqxBQpo9AjDybVVVczQYby41s3S/dQA8Ng9CS3r9vi0x6GPlyMU+pvUpb3lPx2/b/pDuveHwADxWROqgrHi3zsbLqn/0rPWKH39fo2L1og36MO/s7siHE3LnA9eUIWjv4odebwRpVVgXIrD0hYEY9cJCtbq1Jrq90RfNjXIoN6I25a58xYXDWPuq2F68BtM2G3uvq23KygVnHFBnhL2eyMqtzTelqPUNDGMe29gwj67oPV7VvRiWYEWYcvFN+iPk8CF88e5I9G6XJ4RN23XFqxOXYvPhpej/gJokfALxQUQEPhgeCD+puL7w6zEeIeHLMEpuUBbOIWyeqssX+x0/cwL8lTh6i+dY8LzWj108GHN26ZFaxUOjELJ7M2b189MOBL5+CJwYgkNfW3g1Rmty5RC2fJgN1K2PgX0aqUkbUTMdff+P1j3wgyvOa91KQdVWIzB/9Rh07lRThWvoapJPYejqj/Fyq4pdiHX+FxcckL176NvBfFgw85g4S7PR+gbGcSn15YIrlPQozGnQByuoP+gLnFrVu1hHX3boUgXi7IG6z4fg1Lr+5fCcxRO/aiXmBWej4ZIXsHiQjQWeiKuOZ1/Rrkczb2MCxlboJVCMLxdMFxvrKy+aVuFc2YehHX6FTMsUeblgogq+mlwFb/wkTgCnpGP7y6bpe41b2Dd1I0I2C/e+ZTTGs8AzFmLfgdTL4ZgzbwOi4g1G8XoDIj8I1sRdENg5L3l7P9Ji7Dh8dXFi+Yg74ZeGt9S6tFWRVQuGryqMC+jR5BP4iPYRVZlUAHQ9eHp+H13cLSHODeuEuMPnHt7qY07cidp4cslE+XdmcWdKgp1nytJxftkk9OnQ0iheX9Ex7/udTHQekolhPkLQPnfFDyW5+iGTD3d8v8kFVMA1bFYaOnNRO2Nl7D5Ek/hXJL5euQHbfz6MqJMUMPeFX5cO6NrrVYwfFIim5bYU3j5DNAzDMIVROWPwDMMwTLFUomJmhmEYpiSwwDMMwzgoLPAMwzAOCgs8wzCMg8ICzzAM46CwwDMMwzgoLPAMwzAOCgs8wzCMg8ICzzAM46CwwDMMwzgoLPAMwzAOCgs8wzCMg8ICzzAM46CwwDMMwzgoLPAMw5SCEwgdOBChsdrIsHM2Bg4MFbOMPcECzzClQhO4gcZtVgTkb7jfD1y/hDPwQ6MG2tBwKQ7o3gGttGEesaFG7xEfAMobFniGKSlStOYjQg1ziQ/FhLX3h4QZju5HHJqhYV05wqUzgF9D4984MyBilhD1BQXeJaYcYYFnmBIhnLsSLb9hy7Fly5a8tmKE8LT3ByaO/XoM9scDzUwEXtF9rnhvlmNECzVmyhX+yT6GKQEUa56wLk6K+4KeFvwqL7l9cUDQtjcgNNf5+2HEigUIkg5YobY1Jmj2FozwVwMZFhKPbzECy4OD8n4T2OQ5tFn9ddLje1/S+hIS3JEFAikWoe+zOExfM0FufgJC44Mwd8uIgmEcxmawg2cYizEg5gAJnB+6tLNA3E2IMRJ3Ig6h3+WFc2SS0kw4I2LBQMzeWYbI/pFQU1HePR8D75MwEsMCzzClQI89a5xYqycRi0gkHtiPCBmu0EM6yzGiobpPPCJciTC53/whn7h1SxFxXd5dYiJ2nxFnCvo+5yKIJndvKtX+fHsu0PYzm/ZCbpz2qcIvRv82U/fOVCQs8AxjMQZcjBc3LRrlhUcsJA5dsNwkNOKLoJ5qHHtYOnsKsZiIY90gTBomJR4Xr2hTJcVv2CSjMFAr9Fb723+09GcFJ46IV5sv/h7UngMv9ggLPMNYjC8akVuNvyikPo9WI42cbGE0a1joQcFAJSgCc0lK34bN5O2ZS6UT5Pz79G3XpVSJYK3OXTtLmb9bTFCoh8bjQ8XhQgsl0Vivi2fsAxZ4hikxZ3CphCEO0xJChikfWOAZxmJ80aZz2UMc+SnKpRfl7nX0bcyRf59a/XrJ4fh75YQFnmFKgG/PF2WiMm7dBOuFI/w7mN9nrF4Bo68Y1UNEoQjP3S4vQWsO0wStvm1pqoA05MEkNweh5SQ4/m6/cB08w5QUM/XquVhQo26OomrMzdW3GxPUPQgRuwupg1f3mVDqWnhVz95MPf56BGaP348u+ev5FVRdJOP15ihDPT5jOezgGaak+I9AbsmhESSwW4zFvQTIEIgMf5hCZZPGBwbabm53NRDIypv2amCO9uKAIytnFGUSVlPHbnq5AsYeYQfPMA5IroMvsKqUuZ9gB88wDOOgsMAzDMM4KCzwDMMwDgrH4BmGYRwUdvAMwzAOCgs8wzCMg8ICzzAM46CwwDMMwzgoLPAMwzAOCgs8wzCMg8JlkkylIjbW9BKODz30EKpVq4akpCT89ddfPGfFOUJ/v+vVqycb4Shz169fh6enZ+6/1RFhB8/YNYmJibLp0BeSYcpKdnY2rly5Ig9qFy5cULOOh8uMGTPeIQfPMPaGOLuUX77U1FTUqlULzs7OoM+q7rr05uLiIrenW56z7hxBYy8vL7i7u6uZyj+Xnp4uP18EOfoqVarIvqPBIRrGbiFxv337thQbChuwe2esCbl4OjusXbt27pgwPrhVdljgGbuG4qTkvFjcGVtCOYiLFy/KM0U9Ru8IcAyesTsyMjJUD6hbty6LO2NzDAaD/NzduHFDzTgGLPCM3XHu3Dn89ttv0r0zTHng4+MjY/Pk4I0NRmWHBZ6xOyipSvHQzMxMNcMwtsXb2xstW7bEAw88YJKYreywwDN2h16rXKNGDTXDMExp4CQrwzCMQF/oRSWT5OQdAXbwDMMwAqqkoZaWlqZmKj8s8IzdQcvKqV27dk3NMIztoXJcao606IkFnmEYRkCL6ag5SniGYIFn7A49yUrLyhmGKT2cZGUYhhFwkpVhGMZBccQkKzt4xu4wd+1u5v7kxNqBmL9bDQRBs7dghL8aWBl28AzD2B0kggMHGrW1J9Q9lRvDztkm4m5rHDHJyg6esTv08khKslLZGlMYBkTMmoDQeDU0psUILA8Ogq8aVkY09+6HESsWIKiummRKBDt4xu7QQzMs7sUQG67EPQhzt2zBFtmWY0QLMRUfiqU7DXRnJcWAS2fothkalpO4U4iG2uXLl9VM5YcdPMNUUvT4dIG49PUIzB4fijjdxceGYuCCCPgNW44FDcNlX4MODCPQSo1MUI/JwwpOusA+C752CstMWBenRgWxZQxez/2QsaBQjSPADp6xO3glqyXoDjcIHfILXt026CJd/EWxlRGXwjHbRGAjMN9MvF7G9PMJMRCH0PEDEappYIkh4S64T/EKFgzE7LKeadCBg3IPsyJM/70lhFeyMgxjX7RoZHGcPW53BJoJByxDOStGCE8u2H0YJhIvxFJLbBqHfUSbHSTvjthcGhE9gXDlysmB5+5TvYa4dUsRoS7979tzgbpfhZryvQ5buXeCV7IyTDmgx+B5JWtRGHDRXHK1KLrPzRPIukF4sTt1zuCS0e+qnDhCLpvCMflCN/4jMJe2j9+PmJL+DkvsYXGuIPY6TIi2sUCL1zBpmJR4XLyiTTHWhQWesTs4yWoJvmgkHa7l+DUszuvrYR8tHGNSeilaaUsWDdpO0czM8/s2bCZvz1wqQ3BFHHykwy9j1ZAjJllZ4BmmMpM/zs6UGr5cMMOUA5xktQRfaOY3AofzJz6vx2A/hW9KEJ/X0PeZL/5u0kpeSVOUSy/K3Zc3nGRlGMZuaNVeJT4XhBolSg2I+HcoKKXp17lNiUMW2j4jMN9cRQpVq5SmUsW/gzhkUDJ1gmkVjtifVhLph0YNtKlSYaUqGk6yMkw5wElWC/HvrSpNhCDnxsrVytYWIzCpZylccW4yVYhv7j5VM1PmaBmt0FsmU+lgVHB/fsMm8UpVG8ECz9gdnGS1FF8EBW/RBNmY7nPLlHBsNXJLblmkCWXYryx/NLNPKptcUJoDkQ3glawMwzAOCq9kZZhyQHdSwnyoGYaxPY6YZGUHz9gdupPSQzUMw5QOdvCM3aE7KTc3NzXDMExpYAfPMAwjoLAgwb/oxDAM42DwSlaGKQc4ycpUBJxkZZhygJOsDGMd2MEzdgcnWRnGOrCDZ5j7gXu3gOy/4JRzRwwq13c9R/hQJ+e6yHGl6zJ4aJM2wBGTrCzwDOPoZP0Kp8xjalCJcfJAjlsnwKWpmrAuvJKVYcoBTrJaD6fseMcQdyInHc4Ze7WzERvgiElWFnjG7tDL1TIzM9UMU2oyf1UdxyCHwktZBX8o3Brw5YIZphzgJKuVuJcgFPGuGjgOTvcuqR5THByDZxhH5d41OKXvUANHwhk5nkNV33o4YpKVHTzDMIzAEVey3jcO/vzJG6rH2ILqtTxRq751foFJd1I1a9ZE7dq1Zb84bmfY9+e3lruT6pUjpXDwafe8kHrPU41sj1AeeDnfgZtzSfIt7OAt5b4R+Kiwk1j9+g9qxFibFUeHW03gS7OS9VzyPey7YZ+f4RpuTnjhgQo4WS6BwP+R2kq01riVVUfNlC8N3c/j0aq/iNtzaqYobCPwjgiHaBi7g5Os5UvUne74+W63ChN34lJGE0QmPIfYlHZqhrEGLPCM3aGXq1kanmFKz+Gkrvgr7W9qVPEcS/oHTqe1VKPyRV9/4Ui/ycoCzzD3Kbez6+BkyuNqZD/8ktxB9coXR0yyssAzdofupHglq205m/aw6tkXd7Nr4HJGEzUqP/TQIK9kZRgbojspXslqWxKyfFTP/ridVf7hOV7JWgrupCXifMIZnLv9FxJS2ZExxcNJ1vIhO8dF9eyPe7Df12Yrbt68iT///BOnT59GQkKCmi0bNimT3Hc6QrRdiL16FDdTDHASxxHxFLh37x68q9RCq/pt0bVZIHq0fEE9wvZwmaRtsWaZZGngMkkzFFMm+UPCc7iYYZsrM5aVv1f7Ca2r/k+N8uM4dfBhYWHYuXMnjh49itu3bwuddJItOzsbvr6+aN++PXr16oVnn31WPaJkWPVT998/v8fQTb0w/79v4NCFfcjITkfNqrVRSzS6pXbP6R5iLh/C4h9nY8D6J7HtxFfq0QzDMBVHeSZZN2zYgA4dOmD69On46aef5FydOnVyW926dWWIct++fZg4cSK6deuGb7/9Vm5XEqwm8Av3vIUF/50GQ/IVeHvWFK2WEHRqteFtJPA1PWlcCzVES8lKwtKDCzBzx1ikZaWoPTH3O5xkZSqC8kiy0sFj5MiRmDNnjjyY+Pj45DZjgdfHdEvlwgaDAVOmTMHrr7+u9mQZVhH4aeHDpXuvUcUbNZS4k4jrwk4OvlZVH9T0orG6T2xH21YXj4m+dBATt72KxLTbao/M/QwnWZmKwNZJVoqr9+vXDz/++CNq1aolhZuasbiTc9ebLvzUaHtq27dvx0svvaT2WDxlFvi5EZPwy5VoVKtSXbQaqO5JIu8tBVw6eOHYNfeu9fOLe3XxGHrsuYTTmL1rgtprxdBv53TsTJ5bsCXORFjMSxg5sKbasoJYPU57PTG91YR10f/9YTv/oWYqhnJNsib8gK1P18WUNnWxbpdBTZqSdfk4Yr+bh81D/i63m9LmY5xV990vpP65Cd+97o+5bdwx5Wl/hLy/CmfN5gHTcPf4JkS+E4RPnhPb0vbPdcU6sX38TbXJfcqoUaMQHx8Pb29veZ0lXeR1EddFXnfudKsfBGhbehw1itfTviyhTAK/KSYUB8/9F14e1UTTBN7ExVOYhly7dO66gxciL+ZpG9qWHlPNo4bcx0nDr1hxcKHaux3h6govvxbot240Fr1ewSJ/H6A7Kfpg25Z0xH8+GQeKEp7jH+PNXk9h3Tsrcej4eTV5f5F1fCFCBgzBvh9PQV5d/uYpnPx6Mj7pPwSx1+QmeYj3a+6QIdjx3V6cvaDmLhxCrNh+5dNdEXncfhcR6aFBW6xkXbBgAWJiYlC9evVcgdcvpkdNF3Zy7vptfvdO29NjaR8//PADVq1apfZeOKUW+DvpiVj3v2XwdKuKqu5eUqCrSZGvLp25FHly7bIpkScHX0Dcq6Oqh5fch6d7VWw5/jlO3/xDPUvFkBwViZ5e83PbhAF7cfB0lrinCh6f1BPdtM3KnzErtdfUJlxNMGXij1Ds2N4bz79eVIWCBx58fhwGLdmD2Qe/wTNq9v7hFxwInifOWOqj7YI4LI7JwMeHz2P08I5C6DchbMte0DcjF5cqaDvuS4z79jwWHxXb6tuP6obqOIQdwatgrz/XYaska1xcHD799FN4eXlJcaZWo0YN5eI1kTfn4KkZu3d6DD1WP8NdsmSJLK0silIL/Ne/rEP2vWx4uHmiirtnntC7ixcgRJtEXku2aq5dC9Wo8IwU9+ryoFCVmpsXqojH0748XD3xdezn6lnsg9M79mPB6/G4SoN6tWB/i7sdi/JJsp7HoWXz4DluHFoXdcHK1uMw+Z130fGp1vCp6jgrHC0lK/pb7CG/9fxS9O/1IFxp0r0+HnntXQT6AHc/24Z44x+NenQKBo96ES0erA9XvZSdth/3CbqLYwL++BnX8rt+O0EXTmsnWdeuXQtPT09UrSo0UjR6Dl3kvb3zQjXGAk+N5nTXros7HSSo0f6onJL2XRSlFvj/nt4hxNhDiHIVVBGiLEVeOHBy45qLryGdOom6TLIKBy+rZ8QcxekppFPVvZo8MNBjq4j9eLhS88CeP+3wV2jquQovJ0hKQ4FUcNsATN//BsJu5sXtw34fXGjMvv6ovgg5P9No25fwYtveCJHj6Vg0UW1ITByMMLVdbissBq9ve3kw+jUXryk6L6dAz9GvudrOzimPJGvqjyux49QUdHu2CdzVHFOQa3/slGGZzt2ehMlV4t274dG+1FmFixYlJGqianW63YardnotL1slWcPDw+VBw1jkdTevO3ljF6+HZ3SBNyfu1Gif//nPf9SzmKdUAk8rUy/fOS+O0G5wo+bqDg8XIfZCoKsIF+4pHDm58+oemshTNY1snrWks/cSwq6FZHRh94C7eLy7i7vcX9a9TBw5f0A9W0VTE48P64b5bzdDLTHK+OsCIrQ7NJ4KxPLtPdGtbTV4GR34vZo2Q781wzHfWKwJIcLL/90KjX2kF5J4NW2BoRuaoZoalx1PBIQFotujeS+InmPIhkBxom3/6E7KZknWlP3Y/V4omk0biRas7kWQgDvnfxG3T8CnfkGz4vNQH3l78ZI8ty2Gq2JfWi8z3XEu5lUcBw4ckCEfd3d32Tw8PEzEnj7nusgbh2mMxZ22oW11UadG+6H9Xbx4UYaACqNUAh9/43e4OrtqAu+cJ/Lu5OilyIt/gHDzXsLJUzhGK5OsLcReiHsV4dqFuNOBgLZ3oyaEnfalNVe4iH3Tc1QUXl0DjRzzJCxa3gUBTYHk309g7auRWqhGUhMjgwPQ3Fu774sBITJGPqxnJPb+Lj7ErtUQINx6XkinGaaPagZa75lx6QzCx9D2S/HWrBO4IP6YdAApwLL16K/nA9Zb+KtU3vXxuM9VbB22VDwuBCv/k4AMMe3u3wIvVgIXb+sk66VvFmLfA++iew9fNcOYJw2pslLmQdQoY21B6o/rtFCPz1j4tbTPUJctkqzHjx+Hq6urNCvUTEReNF3kvb1ryFCNnmSlz76xuBuLur4v2i+1EydOqGcrSKkuVfD/Ytbis/8tlXH1Wl4+4lZVy1CljEyqareyikbcUjjG2ckZSel3kZh6G4kpt5GQcks0ur2Z27+dfFPeT7eP3ukIw/+s94vw9Ws+iCvfFe1fqUxwZNfCP3wZ54QoT1uPtXoEqXlvhMS2QeOki/ii3mfYpKYlzftiXWwr4ZhvIMJrJf5Nc08NwLrwR8RcAg4OWIoFRpGo+sGj8enr9eEuvlS/vvUB3lqm7jCGyiQH1wHiYswnWilEs4gOIEmIHvMR5q5X8/gHFl0OxOPeRexb0O3rNzD9mWoyydy/589q1jJyOv8MZ5cK+Fk6RePmfnhkxGw1KoILGxHy3Puot+oYnu8og264u2sY5r69Hf4Lf8OwIkU/GpFtnsEOzMTkmClC9iwj59YVRH44Q43Kj/btmuL1MS3UqCDFX6rgKo5Nb4L1kX0weNcWtM1Yh5Bhr8EQ+B2mzuiJrF0Dxfu2DY+8E4fRzxfxblzehPVDhuDYzfpouzAKg3sU/84VdamC7GwnDH4tUo2shx4SJD0k4bQGFFKJioqS7ty4QoZu9TndudMtiTpBNfOUg7px40aBdv36dZP+5MmTMWGC+RLzUjl4ugSBk/gvF/GGiP/JGfq/sxjTfy7OztKNk6Mnx06u39nJRYq93EI9Tmu0G+2WyMrJkqu3rNVKgrkqmohjSXCnsMvqweintsPLdSHzc9UaYWiu41dNijvhCnfdNXeqDulJb97Gr/nSDFdnXYHVck9JCTidK+7GiNdShBPbe7P0p873cu6Zfd/Lq1lGIk6ufx8nO81EZyXu5YW512zrZnXS00wrZhRuHkU48ss7sfUtEndxHjBuC16yQNwtwdy/t6yNrgVDjYTV3P2laVlZ2jtG2qY3fews9FFvLi4u8qCih2Kor99n/DjCeB/U0tPT5dgcpXLwW379HGuOfKS5dengyb2rRKpw7fqtLIkkB+/uJV6IM1LSk3BHnPMlikauXXPr5N5FSxWN+uq2VVInNMhqpp6x7Fw9m4DL24r+fU/dwZt3sC0wO+4ldGoInF4mRP8tMaU76iIxcs1FOnBKsoqzAWs4+MQzWPvAemxV03kOXhjY9fMxeoyazo/af2kc/GOvJcHD0zoxc716Rk8mWUJSZg6avfyGGpkn69A8zB+7H12+3InA1nkCXx4O/sZ/Tc7vyoWGDVzxcl/xRy+E4h18Ak6+74uQr5/A85uO4Ml8P/x0Vzl4/4Xnxftm5uw4YS92TApC5HEh7sMjMHpiN9NEbREU5+A/Wl05fkSfrgy5Z8+eXOdu7OSNHTw1CstQSIa4c+eOPNjoTp3KIfW+7txpjm6nTp2KMWPMf6lLJfAHzvwX8yInaSEYPUQjE6l5YZkaVbRqmWoe1eDuWkU70mSmITkjCUlpd2SY5k4aCT2FaW4LsdcFXozF7bh/TEff1oPVM5YdS64mWbTAG92/Zyf6944G5gzHd281gnthgpsfffubZ7CyyXqYPsIOBH652P+wOkVvUwjWvJokxUEJvbrAEiy5muTZNXXxyUo1KIJnvrwuDgBqYELpBL4yX03y0ob2+HDJL+j8bwP6/cv09O/sSnd8sober4yC79fdQ4gc3xU7jtdHi4lbMGx4R4vFnaiIq0nagi+//BLz5883EXMSd2r02aZbfSEThWcozk6kpqZKkadQDQk5mR5d5HVh18crVqxAz5495ePyU6pP3aP1HkfWvSzZsrMzkSlbBjKzMpCRlYa0zFSkZCYjOf2uvB58Irl10ahPcykZyUgT26VnpYvt0+Vjs8Q+5P5Ua+nrr57NXqiJxvW1U9GMtFR5i4MJkF7zoQYYZ0ny8uBdbXufWng834qZ+h82EOJewUzQFlKVVNytja2TrIzl1PtbT1B144G9+6A+9RoZe/H7N9QZi0b5j3Qpurg/iI7v7JaLokoi7hWFLZKsTzzxhAzTUKMYP7WMjAxZWUMtJSVFlgQnJiYqEdcEnNw7CTzdR2Kvb0+PpUb70ffZpk0b9WwFKZXA165aB63qtZHCnEFNiHSacOdpWalIzUiRAp4n7ppLvy1FXrzo1ESZbKVwDW1LBwNy9rliLw4SdavVlwcRe6H5MwEYt3M4uvnRKAtX/6ey1uLU62BsFuBaH70jR+P1aS2g6bxWWjl95ziE/WxUs77nKE6epk5NdFo9HOMGa6e1zccOwMJhlaGAsXLz4Kjr+DimYJu/UFvJSiEaGpt37/cnrgEv4CkKzXw3CWHfn9Vi8BlXcfLTeYi8CVQf3gctZH27gsR9jBD3yz3x/MYjGPR8S21xVCVAX39BQmot/P390bBhQxknp0b7JsEmYU9OTsbdu3eluOtO/fr1vJAMzZHI0za0LT1GF3t9f3QAqV+/cO0o9Xljj7+9IIRZCbsQ6bRMIezpQtiFuCel3cXd1Du4Q+KeekuIu1YpQ2EYisHfVSKfLEQ+RYh8qnistg9N6Lu3eE49S8VgWiY5F8u/7oneXavJBTHJP/2MDxZp21GMcu17MTidKLr16iPo3ZewXD5GK63s1rWOSW08cAYfrDmDZOr6NELv1aO1/X/4COpfSyi4gEqGbfJeR268369N3lz+hVFlwF4uNqY7KT0WX7FQWEa7GNkUGZ4h3scnuXPDcMxOV2ZahyfQeda7eJAqamb74U26eFiHJgj57JD4DL+I/gO7mQj43aiPhHMXnZs78d0rvtrFxvI1isnbIxT/pkYlidakb9++UpR1UadGBxISb2Nx10MueviFPv/k5Gkb3c3nF/oBAwaoZzFPqQW+96OD0Mi7qRRmEmgSat25J6ULcSf3TglVGWO/pRrF2oXAi/vupt3RwjXSySfnunkPlyp4ue1o9Sx2gjgVSr50A9HLvsGEwL1GdfCCHTsx4dmdiIi6gWSjA39GYhIuRMVg7eT9akaxbD0mvH4CF27m1SMkn4vHF6+eQZIcJeGqufj7fYTupPSyNaZicW39NkZ//SWe/FdLGa6BT0s8MuATTA77Ev5F1y1UKvTQoLVXso4dO1ZWx+gCT59tcuV6jF2v3CFxN24k8nSfsZM3FvnGjRtjyJAh6lnMU6af7Dt4dg9m7RonrwapXy6YVqhSo9JISq7SIihZFimeg65dQ7F2CuukSeeeKl28dlAg15+IKV3n4blHX1TPYD3s/if79Br5rKvY6h2Coq8wYX9UhiRrRcE/2VdyHCXJqrNx40bMmjVLfqbzXzhMrxajxUt6WaQeXyeXrrt+/aBAjp6EPyQkBD169FDPYJ4yfeo6PfgUhv59vHDuJNJadQw5c3LoBd277uA1F08On7Yjt6+Ha559ZKBNxN2+6I2P/hqN2e8GIKCtNtN8cE8sWt1Cq5v//QK2y9n7F06yMhWBLZKsOq+88opsJNC6SBu7dz08Y+zejcM0tK0eqqFGC5uKE3eizLZiWMBEDPQfJoVaijsJuxR3Lf6ulUFSHN5I5FWohhKuFKunmD3F3af+6121V8emWr366DStJ+bv1+Loy1cH4PGGrkDaDUS8t9M0BMQwTLmghwbJNduC4OBg+YtOuriTeJsTd4rBGwu9LvK60A8fPlz+lqsluMyYMeMdOiUoC+0ad0ItTx/8dHavTJJSmWPWPdMKG6qUSc3UYu0Uc9cSrJSUvYvhAZMx/p+0csh2nPv9Bo7u0k79KxYDklxqoH4zcXpWla67I6Yoxv/naYS/9S1WbrPNh8vW9BrdBp7VrHPlLnJR9GGmsKGlC50SM3Nw1k5/1tfDxQmPVC/bd6xU5CTDKTteDQryV9rfcCe7jBeZsREPuF9APbcrapQf8V66PaH61oPCIHStF0qyUvjEFnTv3l2uWqUf7NDLJ6nsUa+w0ROoeqxdj9dTo23eeecdTJo0Se2teMoUg8/PtaTL+Dx6OXac2ipj73TxMLpUAe2f/qPl7DIOfy9TlkN2a94Tg/8+Fs198i2RswF2H4Ov5FgzBh8bGytv69WrJ5slcAzeDByDt1tOnTqFpUuXyksJ0+Im/eJhUitFy87Olk2Pww8aNEj+4DYlVkuCVQVeh+Ls+/7ahV8uH8G526dxO5XK3XLk6tbG3s3g36Ad/tW8O+pVs82P25qDBd62cJK1cFjgS46jC7wOxft37NiBI0eOyMsa0Jkr6TGteH344YfRsWNH9OrVS45Lg00E3h5hgbct1hT40sACbwYW+BKhGwsK0Vi7VLKiqIBPHcMw9oCbc+FXIaxo3J3oFwzKF1snWSsCFnjG7tDL1ah6gLEddV3tdwmuTwW8NlutZK1IWOAZu0N3UryS1bY09zwFFydzV3ivWOq7X0IdNxtcz74YbLWStSJhgWfsDt1JUWUBYzs8nNIQUM1efvs4j3bVflI9pqywwDN2B69kLT9aeh5HQHX7EHlPlxQE1gxHHdeKWeqnhwZtsZK1orivqmg2zj+oRoy1WbT7pQqvojlU8HKcdoG7sFH2WEVjTEKmD/5IewxXMhsh7V5VNWt7aPmXl3MimlQ5i0c8f4WbRclV21TR6Osv6OyRDIYjcN8IPFN50MvVSlIHz5ihBAJfueAySUvhEA1jd3CSlakIOMnKMOUAJ1kZxjpwiIZhHJWcJDilfa0GDoRzDeR49FMD68EhGoZhKg9O1cQ33PF+6zfH2TaXV9BDg7ySlWFsiF6uxitZy06OW+G/uF8pcaoJuFr/UsGEHhp0pJWsHKJh7I7SXC6YKRyne5eQk3EITjl31EzlJMe5IeD+T+3MhLEIFnjG7uAySRshhB7ZCeJbr8aVBmc4OdcVAl9HjRlLYYFnGIYRcJKVYRjGQeEkK8OUA5xkZRjrwCEaxu7gJCvDWAd28IzdwStZGcY6sINnGIYRUFjQ3d1dVm+RwXAE2MEzdktGRvn/Lidzf6InWCnv40ifOxZ4xu5ITU3FuXPncOrUKfmlYxhb4+Likuvavb295a0jwALP2B30ZUtMTJT927ft9Fc8GIfC09NTXiq4ZcuW8vPnKLDAM3YHxUGpeoa+dI50bW7G/rhx4wbi4+ORnZ0tx/TZcyQ4ycrYLfSl090UJcCo7+PjI0+l6T4K5RB0IKD7ymOO0MNGJAa6IPCcfc7R34z+dgT9Lelvqm9HZ4kUCiToM+UoP9NnjMuMGTPeIYFnGHvD2Vk7waQv4vXr15Geni6XkXt5eSElJUWKPoVwqlevLr+w5TFHUG6A5kg89Lgtz9nnHCVMa9WqJecuXLiAa9eu5W5HnyX9cY0aNXLIslwO0TB2Dzkw+pLSF1F3YwxTWvSzMkKPuzvq54pDNEylxNqhF0vnCFuFE3jO+nP0N6O/HUF/S/qbGs85OizwDMMwDgqHaBiGYRwUFniGYRgHhQWeYRjGQWGBZxiGcVBY4BmGYRwUFniGYRgHhQWeYRjGQWGBZxiGcUiA/w/AJAqz3dQNdwAAAABJRU5ErkJggg==" /><!-- --></p>
+<p>Hence, all ICD-9 codes starting with <code>41</code> followed by either <code>0</code> or <code>2</code> will be recognized as myocardial infarction according to <code>icd9cm_deyo</code>. The corresponding regular expression for ICD-10 is:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">visualize</span>(charlson, <span class="st">&quot;myocardial infarction&quot;</span>, <span class="at">regex =</span> <span class="st">&quot;icd10&quot;</span>)</span></code></pre></div>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
+<p>Such codes should start with <code>I2</code> followed by either <code>1</code>, <code>2</code> or <code>52</code>. The vertical bar <code>|</code> (in the regular expression of the heading) indicates a logical “or.” See <code>?regex</code> for more details on how to use regular expressions in R (Perl-like versions are currently not allowed).</p>
+</div>
+<div id="summary" class="section level1">
+<h1><code>summary()</code></h1>
+<p>An alternative representation is to list all relevant codes identified by each regular expression. This is implemented by the <code>summary()</code> method for classcodes objects. Note, however, that the regular expressions are stand alone in each classcodes object. Hence, there are no static look-up-tables to map individual codes to each group. We therefore need to specify a code list/dictionary of all possible codes to be recognized by those regular expressions. Then <code>summary()</code> will categorize those and display the result. Common code lists are found in the <a href="https://cancercentrum.bitbucket.io/decoder/">decoder</a> package and are accessed automatically through the <code>coding</code> argument to <code>summary()</code>. Hence, there is a “keyvalue” object <code>icd10cm</code> with all ICD-10-CM codes in <code>{decoder}:</code></p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(decoder<span class="sc">::</span>icd10cm)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     key                                              value</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1  A000 Cholera due to Vibrio cholerae 01, biovar cholerae</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2  A001    Cholera due to Vibrio cholerae 01, biovar eltor</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3  A009                               Cholera, unspecified</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4 A0100                         Typhoid fever, unspecified</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5 A0101                                 Typhoid meningitis</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 6 A0102               Typhoid fever with heart involvement</span></span></code></pre></div>
+<p>We can use this code list to identify all codes recognized by <code>charlson</code> with its default classification based on “icd10.” The printed result (see <code>?print.summary.classcodes</code>) is a tibble with each group and a comma separated code list.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>s <span class="ot">&lt;-</span> <span class="fu">summary</span>(charlson, <span class="at">coding =</span> <span class="st">&quot;icd10cm&quot;</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Classification based on: icd10</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>s</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Summary of classcodes object</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Recognized codes per group:</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 17 x 3</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    group                      n codes                                           </span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    &lt;chr&gt;                  &lt;int&gt; &lt;chr&gt;                                           </span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  1 AIDS/HIV                   1 B20                                             </span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  2 cerebrovascular disea…   430 G450, G451, G452, G453, G454, G458, G459, G460,…</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  3 chronic pulmonary dis…    69 I2781, I2782, I2783, I2789, I279, J40, J410, J4…</span></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  4 congestive heart fail…    36 I099, I110, I130, I132, I255, I420, I425, I426,…</span></span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  5 dementia                  11 F0150, F0151, F0280, F0281, F0390, F0391, G300,…</span></span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  6 diabetes complication    204 E1021, E1022, E1029, E10311, E10319, E103211, E…</span></span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  7 diabetes without comp…    52 E1010, E1011, E10610, E10618, E10620, E10621, E…</span></span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8 hemiplegia or paraple…    45 G041, G114, G801, G802, G8100, G8101, G8102, G8…</span></span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9 malignancy               961 C000, C001, C002, C003, C004, C005, C006, C008,…</span></span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10 metastatic solid tumor    47 C770, C771, C772, C773, C774, C775, C778, C779,…</span></span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 11 mild liver disease        38 B180, B181, B182, B188, B189, K700, K7010, K701…</span></span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 12 moderate or severe li…    14 I8500, I8501, I864, K7040, K7041, K7110, K7111,…</span></span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 13 myocardial infarction     18 I2101, I2102, I2109, I2111, I2119, I2121, I2129…</span></span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 14 peptic ulcer disease      36 K250, K251, K252, K253, K254, K255, K256, K257,…</span></span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 15 peripheral vascular d…   274 I700, I701, I70201, I70202, I70203, I70208, I70…</span></span>
+<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 16 renal disease             28 I120, I1310, I1311, N032, N033, N034, N035, N03…</span></span>
+<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 17 rheumatic disease        348 M0500, M05011, M05012, M05019, M05021, M05022, …</span></span>
+<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  Use function visualize() for a graphical representation.</span></span></code></pre></div>
+<p>A list with all code vectors (to use for programmatic purposes) is also returned (invisible) and accessed by <code>s$codes_vct</code>.</p>
+<p>Now, compare the result above with the output based on a different code list, namely ICD-10-SE, the Swedish version of ICD-10, instead of ICD-10-CM:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(charlson, <span class="at">coding =</span> <span class="st">&quot;icd10se&quot;</span>)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Classification based on: icd10</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Summary of classcodes object</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Recognized codes per group:</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 17 x 3</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    group                      n codes                                           </span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    &lt;chr&gt;                  &lt;int&gt; &lt;chr&gt;                                           </span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  1 AIDS/HIV                  22 B200, B201, B202, B203, B204, B205, B206, B207,…</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  2 cerebrovascular disea…    82 G450, G451, G452, G453, G454, G458, G459, G460,…</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  3 chronic pulmonary dis…    57 I278, I279, J409, J410, J411, J418, J429, J430,…</span></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  4 congestive heart fail…    19 I099, I110, I130, I132, I255, I420, I425, I426,…</span></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  5 dementia                  23 F000, F001, F002, F009, F010, F011, F012, F013,…</span></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  6 diabetes complication     71 E102, E102A, E102B, E102C, E102W, E102X, E103, …</span></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  7 diabetes without comp…    55 E100, E100A, E100B, E100C, E100D, E100X, E101, …</span></span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8 hemiplegia or paraple…    22 G041, G114, G801, G801A, G801B, G801X, G802, G8…</span></span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9 malignancy               525 C000, C001, C002, C003, C004, C005, C006, C008,…</span></span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10 metastatic solid tumor    29 C770, C771, C772, C773, C774, C775, C778, C779,…</span></span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 11 mild liver disease        83 B180, B180A, B180B, B180C, B180D, B180E, B180F,…</span></span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 12 moderate or severe li…    11 I850, I859, I864, I982, K704, K711, K721, K729,…</span></span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 13 myocardial infarction     15 I210, I211, I212, I213, I214, I214A, I214B, I21…</span></span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 14 peptic ulcer disease      36 K250, K251, K252, K253, K254, K255, K256, K257,…</span></span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 15 peripheral vascular d…    43 I700, I700A, I700B, I700X, I701, I702, I702A, I…</span></span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 16 renal disease             27 I120, I131, N032, N033, N034, N035, N036, N037,…</span></span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 17 rheumatic disease         63 M050, M051, M052, M053, M058, M058A, M058B, M05…</span></span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  Use function visualize() for a graphical representation.</span></span></code></pre></div>
+<p>There are some noticeable differences. AIDS/HIV for example has only one code deemed clinically relevant in the USA (thus included in the CM-version of ICD-10), although there are 22 different codes potentially used in the Swedish national patient register. There are additional differences concerning the fifth code position (digits in ICD-10-CM and characters in ICD-10-SE). Those mark national modifications to the original ICD-10 codes, which has only 4 positions (one character and three digits). For this example, the <code>charlson$icd10</code> column was based on ICD-10-CM <span class="citation">(Quan et al. 2005)</span>. The comparison above thus highlights potential differences when using this classification in a setting based on another classification (such as with data from the Swedish national patient register).</p>
+<p>If we are interested in another code version, for example as specified by ICD-9-CM <span class="citation">(Deyo, Cherkin, and Ciol 1992)</span> , this can be specified by the <code>regex</code>-argument passed by the <code>cc_args</code> argument to the <code>set_classcodes</code> function. Simultaneously, the <code>coding</code> argument is set to <code>icd9cmd</code> to match the regular expressions to the disease part of ICD-9-CM classification.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  charlson, <span class="at">coding =</span> <span class="st">&quot;icd9cmd&quot;</span>,</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">cc_args =</span> <span class="fu">list</span>(<span class="at">regex =</span> <span class="st">&quot;icd9cm_deyo&quot;</span>)</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Summary of classcodes object</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Recognized codes per group:</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 17 x 3</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    group                      n codes                                           </span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    &lt;chr&gt;                  &lt;int&gt; &lt;chr&gt;                                           </span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  1 AIDS/HIV                   1 042                                             </span></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  2 cerebrovascular disea…    69 430, 431, 4320, 4321, 4329, 43300, 43301, 43310…</span></span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  3 chronic pulmonary dis…     8 490, 500, 501, 502, 503, 504, 505, 5064         </span></span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  4 congestive heart fail…    15 4280, 4281, 42820, 42821, 42822, 42823, 42830, …</span></span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  5 dementia                  14 2900, 29010, 29011, 29012, 29013, 29020, 29021,…</span></span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  6 diabetes complication     12 25040, 25041, 25042, 25043, 25050, 25051, 25052…</span></span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  7 diabetes without comp…    20 25000, 25001, 25002, 25003, 25010, 25011, 25012…</span></span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8 hemiplegia or paraple…    13 34200, 34201, 34202, 34210, 34211, 34212, 34280…</span></span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9 malignancy               628 1400, 1401, 1403, 1404, 1405, 1406, 1408, 1409,…</span></span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10 metastatic solid tumor    30 1960, 1961, 1962, 1963, 1965, 1966, 1968, 1969,…</span></span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 11 mild liver disease         7 5712, 57140, 57141, 57142, 57149, 5715, 5716    </span></span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 12 moderate or severe li…     6 4560, 4561, 5722, 5723, 5724, 5728              </span></span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 13 myocardial infarction     31 41000, 41001, 41002, 41010, 41011, 41012, 41020…</span></span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 14 peptic ulcer disease      72 53100, 53101, 53110, 53111, 53120, 53121, 53130…</span></span>
+<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 15 peripheral vascular d…    15 44100, 44101, 44102, 44103, 4411, 4412, 4413, 4…</span></span>
+<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 16 renal disease             26 5820, 5821, 5822, 5824, 58281, 58289, 5829, 583…</span></span>
+<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 17 rheumatic disease          8 7100, 7101, 7104, 7140, 7141, 7142, 71481, 725  </span></span>
+<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  Use function visualize() for a graphical representation.</span></span></code></pre></div>
+</div>
+<div id="section" class="section level1">
+<h1></h1>
+</div>
+<div id="codebook" class="section level1">
+<h1><code>codebook()</code></h1>
+<p>Even with individual codes summarized, those might still be hard to interpret on their own. The <a href="https://cancercentrum.bitbucket.io/decoder/">decoder</a> package can help to translate codes to readable names/description. This is facilitated by the <code>codebook()</code> function in the <code>{coder}</code> package.</p>
+<p>The main purpose is to export an Excel-file (if path specified by argument <code>file</code>). The output is otherwise a list, including both a summary table (described above) and a tibble with “all_codes” explaining the meaning of each code.</p>
+<p>We can compare the codes recognized as AIDS/HIV by either ICD-10-CM or ICD-10-SE:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>cm <span class="ot">&lt;-</span> <span class="fu">codebook</span>(charlson, <span class="st">&quot;icd10cm&quot;</span>)<span class="sc">$</span>all_codes</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Classification based on: icd10</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>cm[cm<span class="sc">$</span>group <span class="sc">==</span> <span class="st">&quot;AIDS/HIV&quot;</span>, ]</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 1 x 3</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   code  description                                group   </span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt; &lt;chr&gt;                                      &lt;chr&gt;   </span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 B20   Human immunodeficiency virus [HIV] disease AIDS/HIV</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>se <span class="ot">&lt;-</span> <span class="fu">codebook</span>(charlson, <span class="st">&quot;icd10se&quot;</span>)<span class="sc">$</span>all_codes</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Classification based on: icd10</span></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>se[se<span class="sc">$</span>group <span class="sc">==</span> <span class="st">&quot;AIDS/HIV&quot;</span>, ]</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 22 x 3</span></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    code  description                                                     group  </span></span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    &lt;chr&gt; &lt;chr&gt;                                                           &lt;chr&gt;  </span></span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  1 B200  HIV-infektion med mykobakterieinfektion                         AIDS/H…</span></span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  2 B201  HIV-infektion med andra bakterieinfektioner                     AIDS/H…</span></span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  3 B202  HIV-infektion med cytomegalvirusinfektion                       AIDS/H…</span></span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  4 B203  HIV-infektion med andra virusinfektioner                        AIDS/H…</span></span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  5 B204  HIV-infektion med candidainfektion                              AIDS/H…</span></span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  6 B205  HIV-infektion med andra mykoser                                 AIDS/H…</span></span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  7 B206  HIV-infektion med Pneumocystis jirovecii (carinii)-pneumoni     AIDS/H…</span></span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8 B207  HIV-infektion med multipla infektioner                          AIDS/H…</span></span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9 B208  HIV-infektion med andra infektions- och parasitsjukdomar        AIDS/H…</span></span>
+<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10 B209  HIV-infektion med ospecificerad infektions- eller parasitsjukd… AIDS/H…</span></span>
+<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # … with 12 more rows</span></span></code></pre></div>
+</div>
+<div id="codebooks" class="section level1">
+<h1><code>codebooks()</code></h1>
+<p>Several codebooks can be combined (exported to a single Excel-file) by the function <code>codebooks()</code> (note the plural s). This is difficult to illustrate in a vignette but examples are provided in <code>?codebooks</code></p>
+</div>
+<div id="bibliography" class="section level1 unnumbered">
+<h1 class="unnumbered">Bibliography</h1>
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-Deyo1992" class="csl-entry">
+Deyo, Richard A., Daniel C. Cherkin, and Marcia A. Ciol. 1992. <span>“Adapting a Clinical Comorbidity Index for Use with ICD-9-CM Administrative Databases.”</span> <em>Journal of Clinical Epidemiology</em> 45 (6): 613–19. <a href="https://doi.org/10.1016/0895-4356(92)90133-8">https://doi.org/10.1016/0895-4356(92)90133-8</a>.
+</div>
+<div id="ref-Quan2005" class="csl-entry">
+Quan, Hude, Vijaya Sundararajan, Patricia Halfon, Andrew Fong, Bernard Burnand, Jean-Christophe Luthi, L Duncan Saunders, Cynthia a Beck, Thomas E Feasby, and William a Ghali. 2005. <span>“Coding Algorithms for Defining Comorbidities in ICD-9-CM and ICD-10 Administrative Data.”</span> <em>Medical Care</em> 43 (11): 1130–39. <a href="https://doi.org/10.1097/01.mlr.0000182534.19832.83">https://doi.org/10.1097/01.mlr.0000182534.19832.83</a>.
+</div>
+<div id="ref-Quan2005" class="csl-entry">
+———. 2005. <span>“Coding Algorithms for Defining Comorbidities in ICD-9-CM and ICD-10 Administrative Data.”</span> <em>Medical Care</em> 43 (11): 1130–39. <a href="https://doi.org/10.1097/01.mlr.0000182534.19832.83">https://doi.org/10.1097/01.mlr.0000182534.19832.83</a>.
+</div>
+</div>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

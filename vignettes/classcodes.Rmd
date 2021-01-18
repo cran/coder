@@ -1,0 +1,173 @@
+---
+title: "Classcodes"
+output: 
+  rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Classcodes}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+bibliography: references.bib
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(coder)
+```
+
+# Motivating example
+
+Let's consider some example data (`ex_peopple` and `ex_icd10`) from `vignette("ex_data")`.
+
+Let's categorize those patients by their Charlson comorbidity:
+
+```{r}
+categorize(ex_people, codedata = ex_icd10, cc = charlson, id = "name", code = "icd10")
+```
+
+Here, `charlson` (as supplied by the `cc` argument) is a "classcodes" object containing a classification scheme. This is the specification of how to match `ex_icd10$icd10` to each condition recognized by the Charlson comorbidity classification. It is based on regular expressions (see `?regex`).
+
+# Default classcodes
+
+There are `r nrow(all_classcodes())` default "classcodes" objects in the package (`classcodes` column below). Each of them might have several versions of regular expressions (column `regex`) and weighted indices (column `indices`):
+
+```{r}
+all_classcodes()
+```
+
+# classcodes object
+
+Each of those classcodes objects are documented (see for example `?charlson`). Those objects are basically tibbles (data frames) with some additional attributes:
+
+```{r}
+charlson
+```
+
+Columns have pre-specified names and/or content:
+
+-   `group`: short descriptive names of all groups to classify by (i.e. medical conditions/comorbidities in the Charlson case)
+-   `description:` (optional) details describing each group
+-   regular expressions identifying each group (see `vignette("Interpret_regular_expressions")` for details and `?charlson` for concrete examples). Multiple versions might be used if combined with different code sets (i.e. ICD-9 versus ICD-10) or as suggested by different sources/authors. (Column names are arbitrary but identified by `attr(., "regexprs")` and specified by argument `regex` in `as.classcodes()`).
+-   numeric vectors used as weights when calculating index sums based on all (or a subset of) individual groups. (Column names are arbitrary but identified by `attr(., "indices")` and specified by argument `indices` in `as.classcodes()`.)
+-   `condition`: (optional) conditional classification (not used with `charlson` but see example below).
+
+In the example above, we did not specify which version of the regular expressions to use. We see from the printed output above (or by `attr(charlson, "regexprs")`), that the first regular expression is "icd10". This will be used by default. We have ICD-10 codes recorded in our code data set (`ex_icd10$icd10`). We might therefore use either "icd10" or the alternative "icd10_rcs". Other versions might be relevant if the medical data is coded by other codes (such as earlier versions of ICD). We will show below how to alter this setting in practice.
+
+# Hierarchy
+
+Some classcodes objects have an additional class attribute "hierarchy", controlling hierarchical groups where only one of possibly several groups should be used in weighted index sums. The classcodes object for the Elixhauser comorbidity classification has this property:\
+
+```{r}
+print(elixhauser, n = 0) # preview 0 rows but present the attributes
+```
+
+This means that patients who have both metastatic cancer and solid tumors should be recognized as such if classified. If such patient are assigned an aggregated index score, however, only the largest score is used (in this case for a metastatic cancer as superior to a solid tumor). The same is true for patients diagnosed with both uncomplicated and complicated diabetes.
+
+Consider a patient Alice with some diagnoses:
+
+```{r}
+pat <- tibble::tibble(id = "Alice")
+diags <- c("C01", "C801", "E1010", "E1021")
+decoder::decode(diags, decoder::icd10cm)
+```
+
+According to Elixhauser, poor Alice has both a solid tumor and a metastatic cancer, as well as diabetes both with and without complications. The (unweighted) index "sum_all", however will not equal 4 but 2, since metastatic cancer and diabetes with complications subsume solid tumors and diabetes without complications.
+
+```{r}
+icd10 <- tibble::tibble(id = "Alice", icd10 = diags)
+x <- categorize(pat, codedata = icd10, cc = elixhauser, 
+                id = "id", code = "icd10", index = "sum_all", check.names = FALSE)
+t(x)
+```
+
+# Conditions
+
+Consider Alice once more. Suppose she got a THA and had some surgical procedure codes recorded at hospital visits either before, during or after her index surgery. Those codes are recorded by the Nomesco classification of surgical procedures (also known as KVA codes in Swedish). Here, "post_op" indicates whether the code was recorded after surgery or not. This information is not always accessible by pure date stamps (if so, the approach illustrated in `vignette("coder")` could be used instead).
+
+```{r}
+
+nomesco <- 
+  tibble::tibble(
+    id      = "Alice",
+    kva     = c("AA01", "NFC01"),
+    post_op = c(TRUE, FALSE)
+  )
+```
+
+Thus, the "post_op" column is a Boolean/logical vector with a name recognized from the "condition" column in `hip_ae`, a classcodes object used to identify adverse events after THA (the use of `set_classcodes()` is further explained below and is used here since `hip_ae` includes codes for both ICD and NOMESCO/KVA).
+
+```{r}
+set_classcodes(hip_ae, regex = "kva")
+
+```
+
+A code from `nomesco$kva` will only be recognized as an adverse events if 1) the code is matched by the relevant regular expression, and 2) the extra condition (from `nomesco$post_op`) is `TRUE.`
+
+We need to specify that codes are based on regular expressions matching NOMESCO codes. We do this by the `regex` argument passed to `set_classcodes()` by the `cc_args` argument.
+
+In the data set (`nomesco`), "AA01" was recorded after surgery but does not indicate a potential adverse event. "NFC01" is a potential adverse event but was recorded already before surgery. Therefore, no adverse event will be recognized in this case.
+
+```{r}
+categorize(pat, codedata = nomesco, cc = hip_ae, id = "id", code = "kva",
+           cc_args = list(regex = "kva"))
+
+```
+
+# Use classcodes objects
+
+Most functions do not use the classcodes object themselves, but a modified version passed through `set_classcodes()`. This function can be called directly but is more often invoked by arguments passed by the `cc_args` argument used in other functions (as in the example above).
+
+## Explicit use of `set_classcodes()`
+
+We might use `set_classcodes()` to prepare a classification scheme according to the Charlson comorbidity index based on ICD-8 [@Brusselaers2017]. Assume that such codes might be found in character strings with leading prefixes or in the middle of a more verbatim description. This is controlled by setting the argument `start = FALSE`, meaning that the identified ICD-8 codes do not need to appear in the beginning of the character string. We might assume, however, that there is no more information after the code (as specified by `stop = TRUE`). We can also use some more specific and unique group names as specified by `tech_names`.
+
+```{r}
+charlson_icd8 <- 
+  set_classcodes(
+    "charlson",
+    regex      = "icd8_brusselaers", # Version based on ICD-8
+    start      = FALSE, # Codes do not have to occur in the beginning of a vector
+    stop       = TRUE,  # Code vector must end with the specified codes
+    tech_names = TRUE   # Use long but unique and descriptive variable names
+  )
+```
+
+The resulting object has only one version of regular expressions (`icd8_brusselaers` as specified). Each regular expression is suffixed with `$` (due to `stop = TRUE`). Group names might seem cumbersome but this will help to distinguish column names added by `categorize()` if this function is run repeatedly with different classcodes (i.e. if we calculate both Charlson and Elixhauser indices for the same patients). The original `charlson` object had `r nrow(charlson)` rows, but `charlson_icd8` has only `r nrow(charlson_icd8)`, since not all groups are used in this version.
+
+```{r}
+charlson_icd8
+```
+
+Note that all index columns remain in the tibble. It is thus possible to combine any categorization with any index, although some combinations might be preferred (such as `regex_icd9cm_deyo` combined with `index_deyo_ramano`).
+
+We can now use `charlson_icd8` for classification:
+
+```{r}
+classify(410, charlson_icd8)
+```
+
+The ICD-8 code `410`is recognized as (only) myocardial infarction.
+
+## Implicit use of `set_classcodes()`
+
+Instead of pre-specifying the `charlson_icd8`, a similar result is achieved by:
+
+```{r}
+classify(
+  410,
+  "charlson",
+  cc_args = list(
+    regex      = "icd8_brusselaers", 
+    start      = FALSE, 
+    stop       = TRUE,
+    tech_names = TRUE
+  )
+)
+```
+
+# Bibliography

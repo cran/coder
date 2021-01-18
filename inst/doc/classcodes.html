@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+
+
+<title>Classcodes</title>
+
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+<style type="text/css">
+/* for pandoc --citeproc since 2.11 */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Classcodes</h1>
+
+
+
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(coder)</span></code></pre></div>
+<div id="motivating-example" class="section level1">
+<h1>Motivating example</h1>
+<p>Let’s consider some example data (<code>ex_peopple</code> and <code>ex_icd10</code>) from <code>vignette(&quot;ex_data&quot;)</code>.</p>
+<p>Let’s categorize those patients by their Charlson comorbidity:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">categorize</span>(ex_people, <span class="at">codedata =</span> ex_icd10, <span class="at">cc =</span> charlson, <span class="at">id =</span> <span class="st">&quot;name&quot;</span>, <span class="at">code =</span> <span class="st">&quot;icd10&quot;</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Classification based on: icd10</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 100 x 25</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    name  surgery    myocardial.infa… congestive.hear… peripheral.vasc…</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    &lt;chr&gt; &lt;date&gt;     &lt;lgl&gt;            &lt;lgl&gt;            &lt;lgl&gt;           </span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  1 Chen… 2020-09-29 FALSE            FALSE            FALSE           </span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  2 Grav… 2020-06-21 FALSE            FALSE            FALSE           </span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  3 Truj… 2020-06-08 FALSE            FALSE            FALSE           </span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  4 Simp… 2020-09-10 FALSE            FALSE            FALSE           </span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  5 Chin… 2020-08-24 FALSE            FALSE            FALSE           </span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  6 Le, … 2020-03-28 FALSE            FALSE            FALSE           </span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  7 Kang… 2020-06-30 FALSE            FALSE            FALSE           </span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8 Shue… 2020-03-29 FALSE            FALSE            FALSE           </span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9 Bouc… 2020-09-04 FALSE            FALSE            TRUE            </span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10 Le, … 2020-08-09 FALSE            FALSE            FALSE           </span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # … with 90 more rows, and 20 more variables: cerebrovascular.disease &lt;lgl&gt;,</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   dementia &lt;lgl&gt;, chronic.pulmonary.disease &lt;lgl&gt;, rheumatic.disease &lt;lgl&gt;,</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   peptic.ulcer.disease &lt;lgl&gt;, mild.liver.disease &lt;lgl&gt;,</span></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   diabetes.without.complication &lt;lgl&gt;, hemiplegia.or.paraplegia &lt;lgl&gt;,</span></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   renal.disease &lt;lgl&gt;, diabetes.complication &lt;lgl&gt;, malignancy &lt;lgl&gt;,</span></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   moderate.or.severe.liver.disease &lt;lgl&gt;, metastatic.solid.tumor &lt;lgl&gt;,</span></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   AIDS.HIV &lt;lgl&gt;, charlson &lt;dbl&gt;, deyo_ramano &lt;dbl&gt;, dhoore &lt;dbl&gt;,</span></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   ghali &lt;dbl&gt;, quan_original &lt;dbl&gt;, quan_updated &lt;dbl&gt;</span></span></code></pre></div>
+<p>Here, <code>charlson</code> (as supplied by the <code>cc</code> argument) is a “classcodes” object containing a classification scheme. This is the specification of how to match <code>ex_icd10$icd10</code> to each condition recognized by the Charlson comorbidity classification. It is based on regular expressions (see <code>?regex</code>).</p>
+</div>
+<div id="default-classcodes" class="section level1">
+<h1>Default classcodes</h1>
+<p>There are 7 default “classcodes” objects in the package (<code>classcodes</code> column below). Each of them might have several versions of regular expressions (column <code>regex</code>) and weighted indices (column <code>indices</code>):</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">all_classcodes</span>()</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 7 x 3</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   classcodes   regex                             indices                        </span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;        &lt;chr&gt;                             &lt;chr&gt;                          </span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 charlson     icd10, icd9cm_deyo, icd9cm_enhan… &quot;charlson, deyo_ramano, dhoore…</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 cps          icd10                             &quot;only_ordinary&quot;                </span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 elixhauser   icd10, icd10_short, icd9cm, icd9… &quot;sum_all, sum_all_ahrq, walrav…</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4 hip_ae       icd10, kva, icd10_fracture        &quot;&quot;                             </span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5 hip_ae_hail… icd10, kva                        &quot;&quot;                             </span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 6 knee_ae      icd10, kva                        &quot;&quot;                             </span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 7 rxriskv      atc_pratt, atc_caughey, atc_garl… &quot;pratt, sum_all&quot;</span></span></code></pre></div>
+</div>
+<div id="classcodes-object" class="section level1">
+<h1>classcodes object</h1>
+<p>Each of those classcodes objects are documented (see for example <code>?charlson</code>). Those objects are basically tibbles (data frames) with some additional attributes:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>charlson</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Classcodes object</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  </span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Regular expressions:</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    icd10, icd9cm_deyo, icd9cm_enhanced, icd10_rcs, icd8_brusselaers, icd9_brusselaers </span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Indices:</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    charlson, deyo_ramano, dhoore, ghali, quan_original, quan_updated   </span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 17 x 14</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    group description icd10 icd9cm_deyo icd9cm_enhanced icd10_rcs</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    &lt;chr&gt; &lt;chr&gt;       &lt;chr&gt; &lt;chr&gt;       &lt;chr&gt;           &lt;chr&gt;    </span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  1 myoc… Acute myoc… I2([… 41[02]      41[02]          &quot;I2([1-3…</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  2 cong… Heart fail… I(09… 428         39891|4(0(2([0… &quot;I(1[13]…</span></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  3 peri… Peripheral… I7([… 44(39|1)|7… 0930|4(373|4[0… &quot;(I7([0-…</span></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  4 cere… Cerebrovas… G4[5… 43[0-8]     36234|43[0-8]   &quot;G4[56]|…</span></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  5 deme… Senile and… F0([… 290         29(0|41)|3312   &quot;A810|F0…</span></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  6 chro… Chronic ob… (I27… 490|50([0-… 4(16[89]|9)|50… &quot;(I2[67]…</span></span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  7 rheu… Systemic l… M(0[… 7(1(0[014]… 4465|7(1(0[0-4… &quot;M(0[569…</span></span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8 pept… Gastric, d… K2[5… 53[1-4]     53[1-4]          &lt;NA&gt;    </span></span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9 mild… Alcoholic … B18|… 571[24-6]   070([23]{2}|[4…  &lt;NA&gt;    </span></span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10 diab… Diabetes w… E1[0… 250[0-37]   250[0-389]       &lt;NA&gt;    </span></span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 11 hemi… Paraplegia… G(04… 34(41|2)    3(341|4([23]|4… &quot;G(114|8…</span></span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 12 rena… Chronic gl… I1(2… 58([2568]|… 40(3([019]1)|4… &quot;I1[23]|…</span></span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 13 diab… Diabetes w… E1[0… 250[4-6]    250[4-7]        &quot;E1[0-4]&quot;</span></span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 14 mali… Malignant … C([0… (1([4-68]|… 1([4-68]|7[0-2… &quot;C([01]|…</span></span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 15 mode… Hepatic co… I(8(… 456[01]|57… 456[0-2]|572[2… &quot;B18|I(8…</span></span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 16 meta… Secondary … C(7[… 19([6-8]|9… 19[6-9]         &quot;C(7[7-9…</span></span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 17 AIDS… HIV infect… B2[0… 04[2-4]     04[2-4]         &quot;B2[0-4]&quot;</span></span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # … with 8 more variables: icd8_brusselaers &lt;chr&gt;, icd9_brusselaers &lt;chr&gt;,</span></span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   charlson &lt;dbl&gt;, deyo_ramano &lt;dbl&gt;, dhoore &lt;dbl&gt;, ghali &lt;dbl&gt;,</span></span>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   quan_original &lt;dbl&gt;, quan_updated &lt;dbl&gt;</span></span></code></pre></div>
+<p>Columns have pre-specified names and/or content:</p>
+<ul>
+<li><code>group</code>: short descriptive names of all groups to classify by (i.e. medical conditions/comorbidities in the Charlson case)</li>
+<li><code>description:</code> (optional) details describing each group</li>
+<li>regular expressions identifying each group (see <code>vignette(&quot;Interpret_regular_expressions&quot;)</code> for details and <code>?charlson</code> for concrete examples). Multiple versions might be used if combined with different code sets (i.e. ICD-9 versus ICD-10) or as suggested by different sources/authors. (Column names are arbitrary but identified by <code>attr(., &quot;regexprs&quot;)</code> and specified by argument <code>regex</code> in <code>as.classcodes()</code>).</li>
+<li>numeric vectors used as weights when calculating index sums based on all (or a subset of) individual groups. (Column names are arbitrary but identified by <code>attr(., &quot;indices&quot;)</code> and specified by argument <code>indices</code> in <code>as.classcodes()</code>.)</li>
+<li><code>condition</code>: (optional) conditional classification (not used with <code>charlson</code> but see example below).</li>
+</ul>
+<p>In the example above, we did not specify which version of the regular expressions to use. We see from the printed output above (or by <code>attr(charlson, &quot;regexprs&quot;)</code>), that the first regular expression is “icd10.” This will be used by default. We have ICD-10 codes recorded in our code data set (<code>ex_icd10$icd10</code>). We might therefore use either “icd10” or the alternative “icd10_rcs.” Other versions might be relevant if the medical data is coded by other codes (such as earlier versions of ICD). We will show below how to alter this setting in practice.</p>
+</div>
+<div id="hierarchy" class="section level1">
+<h1>Hierarchy</h1>
+<p>Some classcodes objects have an additional class attribute “hierarchy,” controlling hierarchical groups where only one of possibly several groups should be used in weighted index sums. The classcodes object for the Elixhauser comorbidity classification has this property:<br />
+</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(elixhauser, <span class="at">n =</span> <span class="dv">0</span>) <span class="co"># preview 0 rows but present the attributes</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Classcodes object</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  </span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Regular expressions:</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    icd10, icd10_short, icd9cm, icd9cm_ahrqweb, icd9cm_enhanced </span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Indices:</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    sum_all, sum_all_ahrq, walraven, sid29, sid30, ahrq_mort, ahrq_readm </span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Hierarchy:</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    c(&quot;metastatic cancer&quot;, &quot;solid tumor&quot;),</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    c(&quot;diabetes uncomplicated&quot;, &quot;diabetes complicated&quot;)</span></span></code></pre></div>
+<p>This means that patients who have both metastatic cancer and solid tumors should be recognized as such if classified. If such patient are assigned an aggregated index score, however, only the largest score is used (in this case for a metastatic cancer as superior to a solid tumor). The same is true for patients diagnosed with both uncomplicated and complicated diabetes.</p>
+<p>Consider a patient Alice with some diagnoses:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>pat <span class="ot">&lt;-</span> tibble<span class="sc">::</span><span class="fu">tibble</span>(<span class="at">id =</span> <span class="st">&quot;Alice&quot;</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>diags <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;C01&quot;</span>, <span class="st">&quot;C801&quot;</span>, <span class="st">&quot;E1010&quot;</span>, <span class="st">&quot;E1021&quot;</span>)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>decoder<span class="sc">::</span><span class="fu">decode</span>(diags, decoder<span class="sc">::</span>icd10cm)</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;Malignant neoplasm of base of tongue&quot;                   </span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [2] &quot;Malignant (primary) neoplasm, unspecified&quot;              </span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [3] &quot;Type 1 diabetes mellitus with ketoacidosis without coma&quot;</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [4] &quot;Type 1 diabetes mellitus with diabetic nephropathy&quot;</span></span></code></pre></div>
+<p>According to Elixhauser, poor Alice has both a solid tumor and a metastatic cancer, as well as diabetes both with and without complications. The (unweighted) index “sum_all,” however will not equal 4 but 2, since metastatic cancer and diabetes with complications subsume solid tumors and diabetes without complications.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>icd10 <span class="ot">&lt;-</span> tibble<span class="sc">::</span><span class="fu">tibble</span>(<span class="at">id =</span> <span class="st">&quot;Alice&quot;</span>, <span class="at">icd10 =</span> diags)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">categorize</span>(pat, <span class="at">codedata =</span> icd10, <span class="at">cc =</span> elixhauser, </span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>                <span class="at">id =</span> <span class="st">&quot;id&quot;</span>, <span class="at">code =</span> <span class="st">&quot;icd10&quot;</span>, <span class="at">index =</span> <span class="st">&quot;sum_all&quot;</span>, <span class="at">check.names =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Classification based on: icd10</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="fu">t</span>(x)</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                                [,1]   </span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; id                             &quot;Alice&quot;</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; congestive heart failure       &quot;FALSE&quot;</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; cardiac arrhythmias            &quot;FALSE&quot;</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; valvular disease               &quot;FALSE&quot;</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; pulmonary circulation disorder &quot;FALSE&quot;</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; peripheral vascular disorder   &quot;FALSE&quot;</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; hypertension uncomplicated     &quot;FALSE&quot;</span></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; hypertension complicated       &quot;FALSE&quot;</span></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; paralysis                      &quot;FALSE&quot;</span></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; other neurological disorders   &quot;FALSE&quot;</span></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; chronic pulmonary disease      &quot;FALSE&quot;</span></span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; diabetes uncomplicated         &quot;TRUE&quot; </span></span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; diabetes complicated           &quot;TRUE&quot; </span></span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; hypothyroidism                 &quot;FALSE&quot;</span></span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; renal failure                  &quot;FALSE&quot;</span></span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; liver disease                  &quot;FALSE&quot;</span></span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; peptic ulcer disease           &quot;FALSE&quot;</span></span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; AIDS/HIV                       &quot;FALSE&quot;</span></span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; lymphoma                       &quot;FALSE&quot;</span></span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; metastatic cancer              &quot;TRUE&quot; </span></span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; solid tumor                    &quot;TRUE&quot; </span></span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; rheumatoid arthritis           &quot;FALSE&quot;</span></span>
+<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; coagulopathy                   &quot;FALSE&quot;</span></span>
+<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; obesity                        &quot;FALSE&quot;</span></span>
+<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; weight loss                    &quot;FALSE&quot;</span></span>
+<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; fluid electrolyte disorders    &quot;FALSE&quot;</span></span>
+<span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; blood loss anemia              &quot;FALSE&quot;</span></span>
+<span id="cb7-34"><a href="#cb7-34" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; deficiency anemia              &quot;FALSE&quot;</span></span>
+<span id="cb7-35"><a href="#cb7-35" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; alcohol abuse                  &quot;FALSE&quot;</span></span>
+<span id="cb7-36"><a href="#cb7-36" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; drug abuse                     &quot;FALSE&quot;</span></span>
+<span id="cb7-37"><a href="#cb7-37" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; psychoses                      &quot;FALSE&quot;</span></span>
+<span id="cb7-38"><a href="#cb7-38" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; depression                     &quot;FALSE&quot;</span></span>
+<span id="cb7-39"><a href="#cb7-39" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; sum_all                        &quot;2&quot;</span></span></code></pre></div>
+</div>
+<div id="conditions" class="section level1">
+<h1>Conditions</h1>
+<p>Consider Alice once more. Suppose she got a THA and had some surgical procedure codes recorded at hospital visits either before, during or after her index surgery. Those codes are recorded by the Nomesco classification of surgical procedures (also known as KVA codes in Swedish). Here, “post_op” indicates whether the code was recorded after surgery or not. This information is not always accessible by pure date stamps (if so, the approach illustrated in <code>vignette(&quot;coder&quot;)</code> could be used instead).</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>nomesco <span class="ot">&lt;-</span> </span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  tibble<span class="sc">::</span><span class="fu">tibble</span>(</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">id      =</span> <span class="st">&quot;Alice&quot;</span>,</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">kva     =</span> <span class="fu">c</span>(<span class="st">&quot;AA01&quot;</span>, <span class="st">&quot;NFC01&quot;</span>),</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">post_op =</span> <span class="fu">c</span>(<span class="cn">TRUE</span>, <span class="cn">FALSE</span>)</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
+<p>Thus, the “post_op” column is a Boolean/logical vector with a name recognized from the “condition” column in <code>hip_ae</code>, a classcodes object used to identify adverse events after THA (the use of <code>set_classcodes()</code> is further explained below and is used here since <code>hip_ae</code> includes codes for both ICD and NOMESCO/KVA).</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set_classcodes</span>(hip_ae, <span class="at">regex =</span> <span class="st">&quot;kva&quot;</span>)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Classcodes object</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  </span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Regular expressions:</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    kva </span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Indices:</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;       </span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 1 x 3</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   group kva                                                            condition</span></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt; &lt;chr&gt;                                                          &lt;chr&gt;    </span></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 KVA   ^(NF([CF-HJ-MS-TW]|A(02|1[12]|2[0-2])|Q09|U[013489]9)|QD(A10|… post_op</span></span></code></pre></div>
+<p>A code from <code>nomesco$kva</code> will only be recognized as an adverse events if 1) the code is matched by the relevant regular expression, and 2) the extra condition (from <code>nomesco$post_op</code>) is <code>TRUE.</code></p>
+<p>We need to specify that codes are based on regular expressions matching NOMESCO codes. We do this by the <code>regex</code> argument passed to <code>set_classcodes()</code> by the <code>cc_args</code> argument.</p>
+<p>In the data set (<code>nomesco</code>), “AA01” was recorded after surgery but does not indicate a potential adverse event. “NFC01” is a potential adverse event but was recorded already before surgery. Therefore, no adverse event will be recognized in this case.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">categorize</span>(pat, <span class="at">codedata =</span> nomesco, <span class="at">cc =</span> hip_ae, <span class="at">id =</span> <span class="st">&quot;id&quot;</span>, <span class="at">code =</span> <span class="st">&quot;kva&quot;</span>,</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>           <span class="at">cc_args =</span> <span class="fu">list</span>(<span class="at">regex =</span> <span class="st">&quot;kva&quot;</span>))</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; index calculated as number of relevant categories</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 1 x 3</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   id    KVA   index</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt; &lt;lgl&gt; &lt;dbl&gt;</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 Alice FALSE     0</span></span></code></pre></div>
+</div>
+<div id="use-classcodes-objects" class="section level1">
+<h1>Use classcodes objects</h1>
+<p>Most functions do not use the classcodes object themselves, but a modified version passed through <code>set_classcodes()</code>. This function can be called directly but is more often invoked by arguments passed by the <code>cc_args</code> argument used in other functions (as in the example above).</p>
+<div id="explicit-use-of-set_classcodes" class="section level2">
+<h2>Explicit use of <code>set_classcodes()</code></h2>
+<p>We might use <code>set_classcodes()</code> to prepare a classification scheme according to the Charlson comorbidity index based on ICD-8 <span class="citation">(Brusselaers and Lagergren 2017)</span>. Assume that such codes might be found in character strings with leading prefixes or in the middle of a more verbatim description. This is controlled by setting the argument <code>start = FALSE</code>, meaning that the identified ICD-8 codes do not need to appear in the beginning of the character string. We might assume, however, that there is no more information after the code (as specified by <code>stop = TRUE</code>). We can also use some more specific and unique group names as specified by <code>tech_names</code>.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>charlson_icd8 <span class="ot">&lt;-</span> </span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_classcodes</span>(</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;charlson&quot;</span>,</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">regex      =</span> <span class="st">&quot;icd8_brusselaers&quot;</span>, <span class="co"># Version based on ICD-8</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">start      =</span> <span class="cn">FALSE</span>, <span class="co"># Codes do not have to occur in the beginning of a vector</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">stop       =</span> <span class="cn">TRUE</span>,  <span class="co"># Code vector must end with the specified codes</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">tech_names =</span> <span class="cn">TRUE</span>   <span class="co"># Use long but unique and descriptive variable names</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
+<p>The resulting object has only one version of regular expressions (<code>icd8_brusselaers</code> as specified). Each regular expression is suffixed with <code>$</code> (due to <code>stop = TRUE</code>). Group names might seem cumbersome but this will help to distinguish column names added by <code>categorize()</code> if this function is run repeatedly with different classcodes (i.e. if we calculate both Charlson and Elixhauser indices for the same patients). The original <code>charlson</code> object had 17 rows, but <code>charlson_icd8</code> has only 13, since not all groups are used in this version.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>charlson_icd8</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Classcodes object</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  </span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Regular expressions:</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    icd8_brusselaers </span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Indices:</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    charlson, deyo_ramano, dhoore, ghali, quan_original, quan_updated   </span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 13 x 9</span></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    group description icd8_brusselaers charlson deyo_ramano dhoore ghali</span></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    &lt;chr&gt; &lt;chr&gt;       &lt;chr&gt;               &lt;dbl&gt;       &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;</span></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  1 char… Acute myoc… (41[0-2])$              1           1      1     1</span></span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  2 char… Heart fail… (4270|428)$             1           1      1     4</span></span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  3 char… Peripheral… (44[0-5])$              1           1      1     2</span></span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  4 char… Cerebrovas… (43[0-8])$              1           1      1     1</span></span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  5 char… Senile and… (290[01])$              1           1      1     0</span></span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  6 char… Chronic ob… (49[0-3]|51[5-8…        1           1      1     0</span></span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  7 char… Systemic l… (7(1[0-2]|34))$         1           1      1     0</span></span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8 char… Paraplegia… (344)$                  2           1      1     0</span></span>
+<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9 char… Chronic gl… (40[34]|58[0-3]…        2           1      1     3</span></span>
+<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10 char… Diabetes w… (250)$                  2           1      1     0</span></span>
+<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 11 char… Malignant … (1([4-68][0-9]|…        2           1      1     0</span></span>
+<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 12 char… Hepatic co… (070|4560|51[1-…        3           1      1     0</span></span>
+<span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 13 char… Secondary … (19[6-9])$              6           1      1     0</span></span>
+<span id="cb12-26"><a href="#cb12-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # … with 2 more variables: quan_original &lt;dbl&gt;, quan_updated &lt;dbl&gt;</span></span></code></pre></div>
+<p>Note that all index columns remain in the tibble. It is thus possible to combine any categorization with any index, although some combinations might be preferred (such as <code>regex_icd9cm_deyo</code> combined with <code>index_deyo_ramano</code>).</p>
+<p>We can now use <code>charlson_icd8</code> for classification:</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">classify</span>(<span class="dv">410</span>, charlson_icd8)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Classification based on: icd8_brusselaers</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; The printed data is of class: classified, matrix.</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; It has 1 row(s).</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; It is here previewed as a tibble</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Use `print(x, n = NULL)` to print as is (or use `n` to specify the number of rows to preview)!</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 1 x 13</span></span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   charlson_icd8_b… charlson_icd8_b… charlson_icd8_b… charlson_icd8_b…</span></span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   &lt;lgl&gt;            &lt;lgl&gt;            &lt;lgl&gt;            &lt;lgl&gt;           </span></span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 TRUE             FALSE            FALSE            FALSE           </span></span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # … with 9 more variables: charlson_icd8_brusselaers_dementia &lt;lgl&gt;,</span></span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   charlson_icd8_brusselaers_chronic_pulmonary_disease &lt;lgl&gt;,</span></span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   charlson_icd8_brusselaers_rheumatic_disease &lt;lgl&gt;,</span></span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   charlson_icd8_brusselaers_hemiplegia_or_paraplegia &lt;lgl&gt;,</span></span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   charlson_icd8_brusselaers_renal_disease &lt;lgl&gt;,</span></span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   charlson_icd8_brusselaers_diabetes_complication &lt;lgl&gt;,</span></span>
+<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   charlson_icd8_brusselaers_malignancy &lt;lgl&gt;,</span></span>
+<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   charlson_icd8_brusselaers_moderate_or_severe_liver_disease &lt;lgl&gt;,</span></span>
+<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   charlson_icd8_brusselaers_metastatic_solid_tumor &lt;lgl&gt;</span></span></code></pre></div>
+<p>The ICD-8 code <code>410</code>is recognized as (only) myocardial infarction.</p>
+</div>
+<div id="implicit-use-of-set_classcodes" class="section level2">
+<h2>Implicit use of <code>set_classcodes()</code></h2>
+<p>Instead of pre-specifying the <code>charlson_icd8</code>, a similar result is achieved by:</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">classify</span>(</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="dv">410</span>,</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;charlson&quot;</span>,</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">cc_args =</span> <span class="fu">list</span>(</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">regex      =</span> <span class="st">&quot;icd8_brusselaers&quot;</span>, </span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">start      =</span> <span class="cn">FALSE</span>, </span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">stop       =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">tech_names =</span> <span class="cn">TRUE</span></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; The printed data is of class: classified, matrix.</span></span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; It has 1 row(s).</span></span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; It is here previewed as a tibble</span></span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Use `print(x, n = NULL)` to print as is (or use `n` to specify the number of rows to preview)!</span></span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 1 x 13</span></span>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   charlson_icd8_b… charlson_icd8_b… charlson_icd8_b… charlson_icd8_b…</span></span>
+<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   &lt;lgl&gt;            &lt;lgl&gt;            &lt;lgl&gt;            &lt;lgl&gt;           </span></span>
+<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 TRUE             FALSE            FALSE            FALSE           </span></span>
+<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # … with 9 more variables: charlson_icd8_brusselaers_dementia &lt;lgl&gt;,</span></span>
+<span id="cb14-22"><a href="#cb14-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   charlson_icd8_brusselaers_chronic_pulmonary_disease &lt;lgl&gt;,</span></span>
+<span id="cb14-23"><a href="#cb14-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   charlson_icd8_brusselaers_rheumatic_disease &lt;lgl&gt;,</span></span>
+<span id="cb14-24"><a href="#cb14-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   charlson_icd8_brusselaers_hemiplegia_or_paraplegia &lt;lgl&gt;,</span></span>
+<span id="cb14-25"><a href="#cb14-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   charlson_icd8_brusselaers_renal_disease &lt;lgl&gt;,</span></span>
+<span id="cb14-26"><a href="#cb14-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   charlson_icd8_brusselaers_diabetes_complication &lt;lgl&gt;,</span></span>
+<span id="cb14-27"><a href="#cb14-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   charlson_icd8_brusselaers_malignancy &lt;lgl&gt;,</span></span>
+<span id="cb14-28"><a href="#cb14-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   charlson_icd8_brusselaers_moderate_or_severe_liver_disease &lt;lgl&gt;,</span></span>
+<span id="cb14-29"><a href="#cb14-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   charlson_icd8_brusselaers_metastatic_solid_tumor &lt;lgl&gt;</span></span></code></pre></div>
+</div>
+</div>
+<div id="bibliography" class="section level1 unnumbered">
+<h1 class="unnumbered">Bibliography</h1>
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-Brusselaers2017" class="csl-entry">
+Brusselaers, Nele, and Jesper Lagergren. 2017. <span>“The Charlson Comorbidity Index in Registry-Based Research.”</span> <em>Methods of Information in Medicine</em> 56 (05): 401–6. <a href="https://doi.org/10.3414/ME17-01-0051">https://doi.org/10.3414/ME17-01-0051</a>.
+</div>
+</div>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
