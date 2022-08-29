@@ -38,11 +38,20 @@ document.addEventListener('DOMContentLoaded', function(e) {
     </style>
 
 
-<style type="text/css">code{white-space: pre;}</style>
+
+<style type="text/css">
+  code {
+    white-space: pre;
+  }
+  .sourceCode {
+    overflow: visible;
+  }
+</style>
 <style type="text/css" data-origin="pandoc">
 pre > code.sourceCode { white-space: pre; position: relative; }
 pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
 div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
@@ -111,13 +120,20 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   for (var i = 0; i < sheets.length; i++) {
     if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
     try { var rules = sheets[i].cssRules; } catch (e) { continue; }
-    for (var j = 0; j < rules.length; j++) {
+    var j = 0;
+    while (j < rules.length) {
       var rule = rules[j];
       // check if there is a div.sourceCode rule
-      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
       var style = rule.style.cssText;
       // check if color or background-color is set
-      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
       // replace div.sourceCode by a pre.sourceCode rule
       sheets[i].deleteRule(j);
       sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
@@ -326,64 +342,81 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(coder)</span></code></pre></div>
-<p>This vignette contains some example data used in the other vignettes.</p>
+<p>This vignette contains some example data used in the other
+vignettes.</p>
 <div id="patients" class="section level1">
 <h1>Patients</h1>
-<p><code>ex_people</code> contains 100 patients (with random names from the <a href="https://centerforassessment.github.io/randomNames/"><code>randomNames</code></a> package) who received total hip arthroplasty (THA) surgery at given (random) dates (<code>surgery</code> column). This data represent a sample from a national quality register.</p>
+<p><code>ex_people</code> contains 100 patients (with random names from
+the <a href="https://centerforassessment.github.io/randomNames/"><code>randomNames</code></a>
+package) who received total hip arthroplasty (THA) surgery at given
+(random) dates (<code>surgery</code> column). This data represent a
+sample from a national quality register.</p>
 <p>See also <code>?ex_people</code>.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>ex_people</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 100 x 2</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 100 × 2</span></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    name              surgery   </span></span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    &lt;chr&gt;             &lt;date&gt;    </span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  1 Chen, Trevor      2020-09-29</span></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  2 Graves, Acineth   2020-06-21</span></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  3 Trujillo, Yanelly 2020-06-08</span></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  4 Simpson, Kenneth  2020-09-10</span></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  5 Chin, Nelson      2020-08-24</span></span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  6 Le, Christina     2020-03-28</span></span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  7 Kang, Xuan        2020-06-30</span></span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8 Shuemaker, Lauren 2020-03-29</span></span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9 Boucher, Teresa   2020-09-04</span></span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10 Le, Soraiya       2020-08-09</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  1 Chen, Trevor      2022-08-12</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  2 Graves, Acineth   2022-05-04</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  3 Trujillo, Yanelly 2022-04-21</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  4 Simpson, Kenneth  2022-07-24</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  5 Chin, Nelson      2022-07-07</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  6 Le, Christina     2022-02-08</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  7 Kang, Xuan        2022-05-13</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8 Shuemaker, Lauren 2022-02-09</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9 Boucher, Teresa   2022-07-18</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10 Le, Soraiya       2022-06-22</span></span>
 <span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # … with 90 more rows</span></span></code></pre></div>
 </div>
 <div id="diagnoses-data" class="section level1">
 <h1>Diagnoses data</h1>
-<p>We are interested in comorbidity for the patients above and have collected some synthesized diagnostics data (<code>ex_icd10</code>) from a national patient register (we can at least assume that for now). Patients have one entry for every combination of recorded diagnoses codes according to the International classification of diseases version 10, <code>icd10</code>, and corresponding dates of hospital <code>admission</code>s for which those codes were recorded. (Column <code>hdia</code> is <code>TRUE</code> for main diagnoses and <code>FALSE</code> for underlying/less relevant codes).</p>
+<p>We are interested in comorbidity for the patients above and have
+collected some synthesized diagnostics data (<code>ex_icd10</code>) from
+a national patient register (we can at least assume that for now).
+Patients have one entry for every combination of recorded diagnoses
+codes according to the International classification of diseases version
+10, <code>icd10</code>, and corresponding dates of hospital
+<code>admission</code>s for which those codes were recorded. (Column
+<code>hdia</code> is <code>TRUE</code> for main diagnoses and
+<code>FALSE</code> for underlying/less relevant codes).</p>
 <p>See also <code>?ex_icd10</code>.</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>ex_icd10</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 2,376 x 4</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 2,376 × 4</span></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    name                 admission  icd10 hdia </span></span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    &lt;chr&gt;                &lt;date&gt;     &lt;chr&gt; &lt;lgl&gt;</span></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  1 Tran, Kenneth        2020-04-12 S134A FALSE</span></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  2 Tran, Kenneth        2020-09-26 W3319 FALSE</span></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  3 Tran, Kenneth        2020-09-05 Y0262 TRUE </span></span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  4 Tran, Kenneth        2020-07-29 X0488 FALSE</span></span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  5 Sommerville, Dominic 2020-09-17 V8104 FALSE</span></span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  6 Sommerville, Dominic 2020-04-28 B853  FALSE</span></span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  7 Sommerville, Dominic 2020-09-12 Q174  FALSE</span></span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8 Sommerville, Dominic 2020-05-03 A227  FALSE</span></span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9 Sommerville, Dominic 2020-09-07 H702  FALSE</span></span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10 Sommerville, Dominic 2019-12-31 X6051 TRUE </span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  1 Tran, Kenneth        2022-02-23 S134A FALSE</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  2 Tran, Kenneth        2022-08-09 W3319 FALSE</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  3 Tran, Kenneth        2022-07-19 Y0262 TRUE </span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  4 Tran, Kenneth        2022-06-11 X0488 FALSE</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  5 Sommerville, Dominic 2022-07-31 V8104 FALSE</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  6 Sommerville, Dominic 2022-03-11 B853  FALSE</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  7 Sommerville, Dominic 2022-07-26 Q174  FALSE</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8 Sommerville, Dominic 2022-03-16 A227  FALSE</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9 Sommerville, Dominic 2022-07-21 H702  FALSE</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10 Sommerville, Dominic 2021-11-12 X6051 TRUE </span></span>
 <span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # … with 2,366 more rows</span></span></code></pre></div>
 </div>
 <div id="medical-data" class="section level1">
 <h1>Medical data</h1>
-<p>Assume we have some external code data from a national prescription register. Such register would likely cover additional patients but let’s just consider a small sample with ATC codes for patients above, such that each patient can have zero, one, or several codes prescribed at different dates.</p>
+<p>Assume we have some external code data from a national prescription
+register. Such register would likely cover additional patients but let’s
+just consider a small sample with ATC codes for patients above, such
+that each patient can have zero, one, or several codes prescribed at
+different dates.</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>ex_atc</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 10,000 x 4</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    name                atc      prescription code          </span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    &lt;chr&gt;               &lt;chr&gt;    &lt;date&gt;       &lt;chr&gt;         </span></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  1 Meier, Hayden       QC01BD02 2012-08-18   q7g-QC01BD02x8</span></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  2 Garza, Kenia        C05AA05  2017-02-26   l3e-C05AA05f2 </span></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  3 Chapa, Nicholas     L01XC29  2017-07-17   o5v-L01XC29x2 </span></span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  4 Slater, Trina       QI07AA03 2012-08-03   d8r.QI07AA03a0</span></span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  5 Banks, Silbret      QD06BB11 2014-03-01   x5q?QD06BB11g1</span></span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  6 Winn, Robert        M01CC    2014-12-19   h4k.M01CCs1   </span></span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  7 Cornelius, Kelly    A16AA07  2017-11-30   r0j.A16AA07j6 </span></span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8 Rubin, Miriah       QD10AD   2013-09-24   t2l?QD10ADg7  </span></span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9 Slater, Trina       A12AA09  2015-09-13   n4w.A12AA09l3 </span></span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10 Jefferson, Deontrae S01AA05  2012-06-26   v1l?S01AA05s7 </span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 10,000 × 4</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    name                 atc      prescription code          </span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    &lt;chr&gt;                &lt;chr&gt;    &lt;date&gt;       &lt;chr&gt;         </span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  1 Le, Soraiya          L03AA16  2020-05-15   f1u?L03AA16d2 </span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  2 Cleveland, Mark      J07CA01  2018-01-23   f6p?J07CA01y5 </span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  3 Santistevan, Charlie QJ57EA06 2013-07-04   e0t.QJ57EA06s9</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  4 Meier, Hayden        R03DB04  2018-11-04   q3p?R03DB04e2 </span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  5 Hill, Audrey         V09IA01  2016-04-18   e7t-V09IA01a1 </span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  6 Thumma, Phillip      L02AE02  2012-05-27   c7c-L02AE02b7 </span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  7 Yost, Rebecca        S01EB06  2016-10-19   z8r.S01EB06l2 </span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8 Mandakh, Joseph      A03DA01  2018-05-23   f3s.A03DA01n9 </span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9 Meier, Hayden        C09AA13  2020-11-11   a9n-C09AA13e4 </span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10 Trinh, Schuyler      A07EA03  2022-09-11   v7v-A07EA03d0 </span></span>
 <span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # … with 9,990 more rows</span></span></code></pre></div>
 </div>
 

@@ -2,7 +2,7 @@ Package: coder
 Type: Package
 Title: Deterministic Categorization of Items Based on External Code
         Data
-Version: 0.13.5
+Version: 0.13.8
 Authors@R: 
   c(
     person("Erik", "Bulow", email = "eriklgb@gmail.com",
@@ -33,14 +33,14 @@ Depends: R (>= 3.3)
 Suggests: covr, testthat, knitr, rmarkdown, writexl
 Imports: data.table, decoder, generics, methods, tibble
 LazyData: TRUE
-RoxygenNote: 7.1.1
+RoxygenNote: 7.2.1
 VignetteBuilder: knitr
 URL: https://docs.ropensci.org/coder/
 BugReports: https://github.com/ropensci/coder/issues
 Encoding: UTF-8
 Language: en-US
 NeedsCompilation: no
-Packaged: 2021-01-14 10:07:41 UTC; erikbulow
+Packaged: 2022-08-29 06:45:16 UTC; eribu
 Author: Erik Bulow [aut, cre] (<https://orcid.org/0000-0002-9973-456X>),
   Emely C Zabore [rev] (Emily reviewed the package (v. 0.12.1) for
     rOpenSci, see
@@ -50,4 +50,4 @@ Author: Erik Bulow [aut, cre] (<https://orcid.org/0000-0002-9973-456X>),
     <https://github.com/ropensci/software-review/issues/381>)
 Maintainer: Erik Bulow <eriklgb@gmail.com>
 Repository: CRAN
-Date/Publication: 2021-01-18 09:00:05 UTC
+Date/Publication: 2022-08-29 07:30:05 UTC
