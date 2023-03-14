@@ -63,16 +63,16 @@ ex_people
 #> # A tibble: 100 × 2
 #>    name              surgery   
 #>    <chr>             <date>    
-#>  1 Chen, Trevor      2022-08-12
-#>  2 Graves, Acineth   2022-05-04
-#>  3 Trujillo, Yanelly 2022-04-21
-#>  4 Simpson, Kenneth  2022-07-24
-#>  5 Chin, Nelson      2022-07-07
-#>  6 Le, Christina     2022-02-08
-#>  7 Kang, Xuan        2022-05-13
-#>  8 Shuemaker, Lauren 2022-02-09
-#>  9 Boucher, Teresa   2022-07-18
-#> 10 Le, Soraiya       2022-06-22
+#>  1 Chen, Trevor      2023-02-28
+#>  2 Graves, Acineth   2022-11-20
+#>  3 Trujillo, Yanelly 2022-11-07
+#>  4 Simpson, Kenneth  2023-02-09
+#>  5 Chin, Nelson      2023-01-23
+#>  6 Le, Christina     2022-08-27
+#>  7 Kang, Xuan        2022-11-29
+#>  8 Shuemaker, Lauren 2022-08-28
+#>  9 Boucher, Teresa   2023-02-03
+#> 10 Le, Soraiya       2023-01-08
 #> # … with 90 more rows
 ```
 
@@ -84,16 +84,16 @@ ex_icd10
 #> # A tibble: 2,376 × 4
 #>    name                 admission  icd10 hdia 
 #>    <chr>                <date>     <chr> <lgl>
-#>  1 Tran, Kenneth        2022-02-23 S134A FALSE
-#>  2 Tran, Kenneth        2022-08-09 W3319 FALSE
-#>  3 Tran, Kenneth        2022-07-19 Y0262 TRUE 
-#>  4 Tran, Kenneth        2022-06-11 X0488 FALSE
-#>  5 Sommerville, Dominic 2022-07-31 V8104 FALSE
-#>  6 Sommerville, Dominic 2022-03-11 B853  FALSE
-#>  7 Sommerville, Dominic 2022-07-26 Q174  FALSE
-#>  8 Sommerville, Dominic 2022-03-16 A227  FALSE
-#>  9 Sommerville, Dominic 2022-07-21 H702  FALSE
-#> 10 Sommerville, Dominic 2021-11-12 X6051 TRUE 
+#>  1 Tran, Kenneth        2022-09-11 S134A FALSE
+#>  2 Tran, Kenneth        2023-02-25 W3319 FALSE
+#>  3 Tran, Kenneth        2023-02-04 Y0262 TRUE 
+#>  4 Tran, Kenneth        2022-12-28 X0488 FALSE
+#>  5 Sommerville, Dominic 2023-02-16 V8104 FALSE
+#>  6 Sommerville, Dominic 2022-09-27 B853  FALSE
+#>  7 Sommerville, Dominic 2023-02-11 Q174  FALSE
+#>  8 Sommerville, Dominic 2022-10-02 A227  FALSE
+#>  9 Sommerville, Dominic 2023-02-06 H702  FALSE
+#> 10 Sommerville, Dominic 2022-05-31 X6051 TRUE 
 #> # … with 2,366 more rows
 ```
 
@@ -108,24 +108,10 @@ ch <-
     cc = "charlson",            # Calculate Charlson comorbidity
     id = "name", code = "icd10" # Specify column names
   )
-#> Classification based on: icd10
+#> Error in UseMethod("categorize"): no applicable method for 'categorize' applied to an object of class "c('tbl_df', 'tbl', 'data.frame')"
 
 ch
-#> # A tibble: 100 × 25
-#>    name              surgery    myocardial.infarction congestive.heart.failure peripheral.vascular.disease cerebrovascular.dise…¹ demen…² chron…³ rheum…⁴ pepti…⁵ mild.…⁶ diabe…⁷ hemip…⁸ renal…⁹ diabe…˟ malig…˟ moder…˟ metas…˟ AIDS.…˟ charl…˟ deyo_…˟ dhoore ghali quan_…˟ quan_…˟
-#>    <chr>             <date>     <lgl>                 <lgl>                    <lgl>                       <lgl>                  <lgl>   <lgl>   <lgl>   <lgl>   <lgl>   <lgl>   <lgl>   <lgl>   <lgl>   <lgl>   <lgl>   <lgl>   <lgl>     <dbl>   <dbl>  <dbl> <dbl>   <dbl>   <dbl>
-#>  1 Chen, Trevor      2022-08-12 FALSE                 FALSE                    FALSE                       FALSE                  FALSE   FALSE   FALSE   FALSE   FALSE   FALSE   FALSE   FALSE   FALSE   FALSE   FALSE   FALSE   FALSE         0       0      0     0       0       0
-#>  2 Graves, Acineth   2022-05-04 FALSE                 FALSE                    FALSE                       FALSE                  FALSE   FALSE   FALSE   FALSE   FALSE   FALSE   FALSE   FALSE   FALSE   FALSE   FALSE   FALSE   FALSE         0       0      0     0       0       0
-#>  3 Trujillo, Yanelly 2022-04-21 FALSE                 FALSE                    FALSE                       FALSE                  FALSE   FALSE   FALSE   FALSE   FALSE   FALSE   FALSE   FALSE   FALSE   FALSE   FALSE   FALSE   FALSE         0       0      0     0       0       0
-#>  4 Simpson, Kenneth  2022-07-24 FALSE                 FALSE                    FALSE                       FALSE                  FALSE   FALSE   FALSE   FALSE   FALSE   FALSE   FALSE   FALSE   FALSE   FALSE   FALSE   FALSE   FALSE         0       0      0     0       0       0
-#>  5 Chin, Nelson      2022-07-07 FALSE                 FALSE                    FALSE                       FALSE                  FALSE   FALSE   FALSE   FALSE   FALSE   FALSE   FALSE   FALSE   FALSE   FALSE   FALSE   FALSE   FALSE         0       0      0     0       0       0
-#>  6 Le, Christina     2022-02-08 FALSE                 FALSE                    FALSE                       FALSE                  FALSE   FALSE   FALSE   FALSE   FALSE   FALSE   FALSE   FALSE   FALSE   TRUE    FALSE   FALSE   FALSE         2       1      1     0       2       2
-#>  7 Kang, Xuan        2022-05-13 FALSE                 FALSE                    FALSE                       FALSE                  FALSE   FALSE   FALSE   FALSE   FALSE   FALSE   FALSE   FALSE   FALSE   FALSE   FALSE   FALSE   FALSE         0       0      0     0       0       0
-#>  8 Shuemaker, Lauren 2022-02-09 FALSE                 FALSE                    FALSE                       FALSE                  FALSE   TRUE    FALSE   FALSE   FALSE   FALSE   FALSE   FALSE   FALSE   FALSE   FALSE   FALSE   FALSE         1       1      1     0       1       1
-#>  9 Boucher, Teresa   2022-07-18 FALSE                 FALSE                    TRUE                        FALSE                  FALSE   FALSE   FALSE   FALSE   FALSE   FALSE   FALSE   FALSE   FALSE   FALSE   FALSE   FALSE   FALSE         1       1      1     2       1       0
-#> 10 Le, Soraiya       2022-06-22 FALSE                 FALSE                    FALSE                       FALSE                  FALSE   FALSE   FALSE   FALSE   FALSE   FALSE   FALSE   FALSE   FALSE   FALSE   FALSE   FALSE   FALSE         0       0      0     0       0       0
-#> # … with 90 more rows, and abbreviated variable names ¹​cerebrovascular.disease, ²​dementia, ³​chronic.pulmonary.disease, ⁴​rheumatic.disease, ⁵​peptic.ulcer.disease, ⁶​mild.liver.disease, ⁷​diabetes.without.complication, ⁸​hemiplegia.or.paraplegia, ⁹​renal.disease,
-#> #   ˟​diabetes.complication, ˟​malignancy, ˟​moderate.or.severe.liver.disease, ˟​metastatic.solid.tumor, ˟​AIDS.HIV, ˟​charlson, ˟​deyo_ramano, ˟​quan_original, ˟​quan_updated
+#> Error in eval(expr, envir, enclos): object 'ch' not found
 ```
 
 How many patients were diagnosed with malignancy?
@@ -133,7 +119,7 @@ How many patients were diagnosed with malignancy?
 
 ```r
 sum(ch$malignancy)
-#> [1] 5
+#> Error in eval(expr, envir, enclos): object 'ch' not found
 ```
 
 What is the distribution of the combined comorbidity index for each patient?
@@ -141,9 +127,8 @@ What is the distribution of the combined comorbidity index for each patient?
 
 ```r
 barplot(table(ch$charlson))
+#> Error in table(ch$charlson): object 'ch' not found
 ```
-
-<img src="man/figures/READMEunnamed-chunk-5-1.png" alt="plot of chunk unnamed-chunk-5" width="100%" />
 
 There are many versions of the Charlson comorbidity index, which might be controlled by the `index` argument. We might also be interested only in diagnoses from 90 days before surgery as specified with an argument list `codify_args`as passed to `codify()`:
 
@@ -161,7 +146,7 @@ ch <-
       days      = c(-90, -1)   # Time window
     )
   )
-#> Classification based on: icd10
+#> Error in UseMethod("categorize"): no applicable method for 'categorize' applied to an object of class "c('tbl_df', 'tbl', 'data.frame')"
 ```
 
 Number of malignancies during this period?
@@ -169,7 +154,7 @@ Number of malignancies during this period?
 
 ```r
 sum(ch$malignancy, na.rm = TRUE)
-#> [1] 3
+#> Error in eval(expr, envir, enclos): object 'ch' not found
 ```
 
 Distribution of the index as proposed by Quan et al 2011 during the 90 day period:
@@ -177,9 +162,8 @@ Distribution of the index as proposed by Quan et al 2011 during the 90 day perio
 
 ```r
 barplot(table(ch$quan_updated))
+#> Error in table(ch$quan_updated): object 'ch' not found
 ```
-
-<img src="man/figures/READMEunnamed-chunk-8-1.png" alt="plot of chunk unnamed-chunk-8" width="100%" />
 
 ## Classification schemes
 
@@ -192,16 +176,7 @@ Default `classcades` are listed in the table. Each classification (classcodes co
 
 ```r
 coder::all_classcodes()
-#> # A tibble: 7 × 3
-#>   classcodes    regex                                                                              indices                                                               
-#>   <chr>         <chr>                                                                              <chr>                                                                 
-#> 1 charlson      icd10, icd9cm_deyo, icd9cm_enhanced, icd10_rcs, icd8_brusselaers, icd9_brusselaers "charlson, deyo_ramano, dhoore, ghali, quan_original, quan_updated"   
-#> 2 cps           icd10                                                                              "only_ordinary"                                                       
-#> 3 elixhauser    icd10, icd10_short, icd9cm, icd9cm_ahrqweb, icd9cm_enhanced                        "sum_all, sum_all_ahrq, walraven, sid29, sid30, ahrq_mort, ahrq_readm"
-#> 4 hip_ae        icd10, kva, icd10_fracture                                                         ""                                                                    
-#> 5 hip_ae_hailer icd10, kva                                                                         ""                                                                    
-#> 6 knee_ae       icd10, kva                                                                         ""                                                                    
-#> 7 rxriskv       atc_pratt, atc_caughey, atc_garland                                                "pratt, sum_all"
+#> Error: 'all_classcodes' is not an exported object from 'namespace:coder'
 ```
 
 # Relation to other packages
